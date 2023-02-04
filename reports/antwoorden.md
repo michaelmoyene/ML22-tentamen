@@ -56,8 +56,8 @@ Een gru met attention is waarschijnlijk het meest geschikte model. Dit model is 
 ### 1d
 Implementeer jouw veelbelovende model: 
 
-- Maak in `model.py` een nieuw nn.Module met jouw architectuur
-- Maak in `settings.py` een nieuwe config voor jouw model
+- Maak in `model.py` een nieuw nn.Module met jouw architectuur : To do
+- Maak in `settings.py` een nieuwe config voor jouw model: To Do
 - Train het model met enkele educated guesses van parameters. 
 - Rapporteer je bevindingen. Ga hier niet te uitgebreid hypertunen (dat is vraag 2), maar rapporteer (met een afbeelding in `antwoorden/img` die je linkt naar jouw .md antwoord) voor bijvoorbeeld drie verschillende parametersets hoe de train/test loss curve verloopt.
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
