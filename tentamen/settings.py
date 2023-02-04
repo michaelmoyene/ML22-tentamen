@@ -56,9 +56,10 @@ class LinearSearchSpace(BaseSearchSpace):
     h2: Union[int, SAMPLE_INT] = tune.randint(16, 128)
     dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
 
-class Attentionconfig():
-    input_size : int
-    hidden_size: int
+class Gruconfig(BaseModel):
+    input : int
+    output: int
+    h1: int
     dropout: float
     num_layers: int
 

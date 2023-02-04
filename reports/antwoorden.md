@@ -17,10 +17,10 @@ MM: Lagen verkleinen snel. Voor: Snel resultaat, eenvoudig te maken. Tegen: Niet
 - Wat vind je van de keuzes die hij heeft gemaakt in de LinearConfig voor het aantal units ten opzichte van de data? En van de dropout?
 MM:
 
-input: De input van dit model is 13  vanwege het aantal features. Dit is dus correct.
+input: De input van dit model is 13 features. Python telt vanaf 0, dus dit moet 12 zijn.
 h1: 100 hidden units is te hoog voor het aantal features. Hierdoor kan er overfitting ontstaan. Een vuistregel bij neurale netwerken is dat het aantal units niet meer dan twee keer zo groot is dan het aantal input units. In dit geval is het maximum dus 26. Door middel van trial en error kan het optimale aantal units gevonden worden. Je zou bijvoorbeeld kunnen werken met factoren (1,5x input en 2x de input) om het beste resultaat te vinden.
 h2: Verkleint het model te veel naar 10 units. Het aantal units wordt lager dan het aantal klassen. Hierdoor kun je nooit meer een goed eindresultaat bereiken.
-Output: staat op 20. Technisch gezien kan dit niet omdat de laag ervoor 13 nodes heeft. Een deel van de informatie in het model is dus al verdwenen. De output van het model moet gelijk zijn aan het aantal klassen in dit geval 10.
+Output: staat op 20. Technisch gezien kan dit niet omdat de laag ervoor 13 nodes heeft. Een deel van de informatie in het model is dus al verdwenen. Het aantal klassen is wel juist. 10 getallen uitgesproken door een man of een vrouw
 Dropout: Dropout is erg hoog. De helft van de data wordt weggegooid. Gezien het formaat van de dataset lijkt mij dit wat veel. Er zijn in totaal 8800 observaties over 10 getallen (880 per getal). Als je de helft weggooit heb je er dus maar 4400 over. Voor machine learning begrippen is dit in verhouding weinig.
 
 ## 1b
@@ -56,8 +56,8 @@ Een gru met attention is waarschijnlijk het meest geschikte model. Dit model is 
 ### 1d
 Implementeer jouw veelbelovende model: 
 
-- Maak in `model.py` een nieuw nn.Module met jouw architectuur : Concept laag geimplementeerd
-- Maak in `settings.py` een nieuwe config voor jouw model: To Do
+- Maak in `model.py` een nieuw nn.Module met jouw architectuur : Concept laag geimplementeerd - RNN Gru model. Waarom werkt 20 klassen wel en 10 niet?
+- Maak in `settings.py` een nieuwe config voor jouw model: Gedaan (gruconfig)
 - Train het model met enkele educated guesses van parameters. 
 - Rapporteer je bevindingen. Ga hier niet te uitgebreid hypertunen (dat is vraag 2), maar rapporteer (met een afbeelding in `antwoorden/img` die je linkt naar jouw .md antwoord) voor bijvoorbeeld drie verschillende parametersets hoe de train/test loss curve verloopt.
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.

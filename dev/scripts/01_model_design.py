@@ -1,3 +1,4 @@
+#Werkende 01_model_design.py code
 from datetime import datetime
 
 import torch
@@ -13,17 +14,17 @@ if __name__ == "__main__":
 
     trainstreamer, teststreamer = datasets.get_arabic(presets)
 
-    from tentamen.model import Linear
-    from tentamen.settings import LinearConfig
+    from tentamen.model import GRUModel
+    from tentamen.settings import Gruconfig
 
     configs = [
-        LinearConfig(
-            input=13, output=20, tunedir=presets.logdir, h1=100, h2=10, dropout=0.5
+        Gruconfig(
+            input=13, output=20, tunedir=presets.logdir, h1=128, dropout=0,num_layers=1
         ),
     ]
 
     for config in configs:
-        model = Linear(config.dict())  # type: ignore
+        model = GRUModel(config.dict())  # type: ignore
 
         trainedmodel = trainloop(
             epochs=50,
