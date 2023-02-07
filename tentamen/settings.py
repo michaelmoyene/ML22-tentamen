@@ -63,3 +63,7 @@ class Gruconfig(BaseModel):
     dropout: float
     num_layers: int
 
+class GruSearchSpace(BaseSearchSpace):
+    h1: Union[int, SAMPLE_INT] = tune.randint(16, 256)
+    dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
+

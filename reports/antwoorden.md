@@ -77,9 +77,12 @@ Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit mode
 
 Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.
 
+##Image invoegen
 
 
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
+
+Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Het is een standaard GRU die al als resultaat 95% behaalt. Best goed.
 
 Hieronder een voorbeeld hoe je een plaatje met caption zou kunnen invoegen.
 
@@ -97,7 +100,15 @@ Een andere collega heeft alvast een hypertuning opgezet in `dev/scripts/02_tune.
 
 ### 2a
 Implementeer de hypertuning voor jouw architectuur:
-- zorg dat je model geschikt is voor hypertuning
+- zorg dat je model geschikt is voor hypertuning - 
+
+#Settings file aangepast
+#To do: Ray Hypertuning.
+
+
+
+
+
 - je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.
 - Stel dat je
 - voeg jouw model in op de juiste plek in de `tune.py` file.
