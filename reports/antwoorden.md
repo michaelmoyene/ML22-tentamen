@@ -56,10 +56,29 @@ Een gru met attention is waarschijnlijk het meest geschikte model. Dit model is 
 ### 1d
 Implementeer jouw veelbelovende model: 
 
-- Maak in `model.py` een nieuw nn.Module met jouw architectuur : Concept laag geimplementeerd - RNN Gru model. Waarom werkt 20 klassen wel en 10 niet?
-- Maak in `settings.py` een nieuwe config voor jouw model: Gedaan (gruconfig)
+- Maak in `model.py` een nieuw nn.Module met jouw architectuur : Concept laag geimplementeerd - RNN Gru model zonder attention layer.
+- Maak in `settings.py` een nieuwe config voor jouw model:
+MM: Het settings bestand is bijgewerkt met de settings voor het GRU Model.
 - Train het model met enkele educated guesses van parameters. 
+Gezien de grootte van de dataset heb ik ervoor gekozen om de dropout op 0 te zetten. Ik wil het model trainen op alle (beperkte) data die er is.
+MM: Training 1: H1: 128, dropout: 0, num layers = 1. Accuracy: 0,938
+MM: Training 2: H1: 128, dropout: 0, num layers = 2. Accuracy: 0.9421
+MM: Training 3: H1: 64 , dropout: 0, num layers = 2. Accuracy: 0.9269
+MM: Training 4: H1: 256, dropout: 0, num layers = 2. Accuracy: 0,9559
+
+
 - Rapporteer je bevindingen. Ga hier niet te uitgebreid hypertunen (dat is vraag 2), maar rapporteer (met een afbeelding in `antwoorden/img` die je linkt naar jouw .md antwoord) voor bijvoorbeeld drie verschillende parametersets hoe de train/test loss curve verloopt.
+
+De hoogste accuracy wordt behaald met een RNN netwerk met twee lagen en 256 hidden nodes. 
+
+Het 3e model laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit kan duiden op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.
+
+Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.
+
+Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.
+
+
+
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
 
 Hieronder een voorbeeld hoe je een plaatje met caption zou kunnen invoegen.

@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     configs = [
         Gruconfig(
-            input=13, output=20, tunedir=presets.logdir, h1=128, dropout=0,num_layers=1
+            input=13, output=20, tunedir=presets.logdir, h1=256, dropout=0,num_layers=2
         ),
     ]
 
