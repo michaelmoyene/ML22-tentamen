@@ -43,7 +43,6 @@ class BaseSearchSpace(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
-
 class LinearConfig(BaseSearchSpace):
     h1: int
     h2: int
@@ -62,7 +61,7 @@ class LinearSearchSpace(BaseSearchSpace):
     dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
 
 class GruSearchSpace(BaseSearchSpace):
-    h1: Union[int, SAMPLE_INT] = tune.randint(16, 256)
+    h1: Union[int, SAMPLE_INT] = tune.qrandint(128, 256, 64)
     num_layers:Union[int,SAMPLE_FLOAT] = tune.choice([1,2])
-    dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
+    #dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
 
