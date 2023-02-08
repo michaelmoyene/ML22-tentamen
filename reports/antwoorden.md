@@ -104,6 +104,7 @@ Implementeer de hypertuning voor jouw architectuur:
 
 #Settings file aangepast
 #To do: Ray Hypertuning.
+ray tune.choice methode gebruikt om model te forceren om te kiezen tussen 1 of twee lagen. Halve lagen kunnen niet.
 
 
 
@@ -112,8 +113,12 @@ Implementeer de hypertuning voor jouw architectuur:
 - je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.
 - Stel dat je
 - voeg jouw model in op de juiste plek in de `tune.py` file.
+MM: Gedaan
 - maak een zoekruimte aan met behulp van pydantic (naar het voorbeeld van LinearSearchSpace), maar pas het aan voor jouw model.
+MM: Gru model aangepast
 - Licht je keuzes toe: wat hypertune je, en wat niet? Waarom? En in welke ranges zoek je, en waarom? Zie ook de [docs van ray over search space](https://docs.ray.io/en/latest/tune/api_docs/search_space.html#tune-sample-docs) en voor [rondom search algoritmes](https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bohb-tune-search-bohb-tunebohb) voor meer opties en voorbeelden.
+
+MM: Niet te veel lagen doorzoeken. Niet teveel nodes omdat het weinig effect heeft gezien de dataset
 
 ### 2b
 - Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in `reports/img`. Suggesties: `parallel_coordinates` kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.
