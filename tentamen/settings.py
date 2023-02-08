@@ -35,7 +35,6 @@ presets = Settings(
     batchsize=128,
 )
 
-
 class BaseSearchSpace(BaseModel):
     input: int
     output: int
@@ -50,12 +49,6 @@ class LinearConfig(BaseSearchSpace):
     h2: int
     dropout: float
 
-
-class LinearSearchSpace(BaseSearchSpace):
-    h1: Union[int, SAMPLE_INT] = tune.randint(16, 128)
-    h2: Union[int, SAMPLE_INT] = tune.randint(16, 128)
-    dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
-
 class Gruconfig(BaseModel):
     input : int
     output: int
@@ -63,7 +56,13 @@ class Gruconfig(BaseModel):
     dropout: float
     num_layers: int
 
+class LinearSearchSpace(BaseSearchSpace):
+    h1: Union[int, SAMPLE_INT] = tune.randint(16, 128)
+    h2: Union[int, SAMPLE_INT] = tune.randint(16, 128)
+    dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
+
 class GruSearchSpace(BaseSearchSpace):
     h1: Union[int, SAMPLE_INT] = tune.randint(16, 256)
+    num_layers:Union[int,SAMPLE_FLOAT] = tune.choice([1,2])
     dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
 
