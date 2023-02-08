@@ -118,7 +118,9 @@ MM: Gedaan
 MM: Gru model aangepast
 - Licht je keuzes toe: wat hypertune je, en wat niet? Waarom? En in welke ranges zoek je, en waarom? Zie ook de [docs van ray over search space](https://docs.ray.io/en/latest/tune/api_docs/search_space.html#tune-sample-docs) en voor [rondom search algoritmes](https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bohb-tune-search-bohb-tunebohb) voor meer opties en voorbeelden.
 
-MM: Niet te veel lagen doorzoeken. Niet teveel nodes omdat het weinig effect heeft gezien de dataset
+MM: Niet te veel lagen doorzoeken. Niet teveel nodes omdat het weinig effect heeft gezien de dataset. 
+MM: Hypertunen vanaf 64 lagen, minder knijpt accuracy af.
+MM: Multiples van 16 toegepast om het hypertunen sneller te maken met de qrandint methode
 
 ### 2b
 - Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in `reports/img`. Suggesties: `parallel_coordinates` kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.
