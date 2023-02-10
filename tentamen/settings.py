@@ -62,6 +62,6 @@ class LinearSearchSpace(BaseSearchSpace):
 
 class GruSearchSpace(BaseSearchSpace):
     h1: Union[int, SAMPLE_INT] = tune.qrandint(128, 256, 64)
-    num_layers:Union[int,SAMPLE_FLOAT] = tune.choice([2,3])
-    #dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.5)
+    num_layers:Union[int,SAMPLE_FLOAT] = tune.choice([2])
+    dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.3)
 

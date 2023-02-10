@@ -123,15 +123,25 @@ In de verkennende fase is geconstateerd dat twee lagen een beter resultaat geeft
 
 We hebben ook gezien dat bij een laaggrootte van 64 het model gaat overfitten. Er is daarom voor gekozen om te hypertunen vanaf 128 tot en met 256 nodes in stappen van 64. Dit zorgt voor een betere performance van het hypertuning model.
 
+De dropout was te hoog in het eerste model (0,5). De searchspace van dit model gaat zoeken tussen 0 en 0.3 dropout.
+
 
 ### 2b
 - Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in `reports/img`. Suggesties: `parallel_coordinates` kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.
 - reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.
 
+MM: Het is verrassend dat een model met een hogere dropout nog steeds redelijk ver komt.
+
+In eerste instantie het hypertuning model de keuze gegeven tussen 2 of drie RNN lagen. Dit leidde tot dezastreuze performance (ruim 1,5 uur hypertunen) en heeft uiteindelijk de VM gecrasht (out of memory). Daarna settings aangepast naar 2 lagen, en de keuze gegeven om een kleine dropout toe te passen. Met dit model een accuracy gehaald van 96%. met een kleine dropout. 
+
+De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudige hypertuning model was in +-18 minuten klaar
+
 Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.
 
 ### 2c
 - Zorg dat jouw prijswinnende settings in een config komen te staan in `settings.py`, en train daarmee een model met een optimaal aantal epochs, daarvoor kun je `01_model_design.py` kopieren en hernoemen naar `2c_model_design.py`.
+
+MM: Settings.py bijwerken, model design.py
 
 ## Vraag 3
 ### 3a
