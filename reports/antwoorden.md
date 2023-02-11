@@ -116,27 +116,31 @@ ray tune.choice methode gebruikt om model te forceren om te kiezen tussen 1 of t
 RNN Gru model toegevoegd aan tune.py file
 
 - maak een zoekruimte aan met behulp van pydantic (naar het voorbeeld van LinearSearchSpace), maar pas het aan voor jouw model.
-MM: Gru model aangepast
+MM: Zoekruimte voor RNNgru ingevoegd in de settings file (Grusearchspace).
+
 - Licht je keuzes toe: wat hypertune je, en wat niet? Waarom? En in welke ranges zoek je, en waarom? Zie ook de [docs van ray over search space](https://docs.ray.io/en/latest/tune/api_docs/search_space.html#tune-sample-docs) en voor [rondom search algoritmes](https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bohb-tune-search-bohb-tunebohb) voor meer opties en voorbeelden.
 
 In de verkennende fase is geconstateerd dat twee lagen een beter resultaat geeft dan 1 laag. In de hypertune file is de paramater 2 en 3 meegegeven om te meten of een 3e laag wat toevoegt.
 
-We hebben ook gezien dat bij een laaggrootte van 64 het model gaat overfitten. Er is daarom voor gekozen om te hypertunen vanaf 128 tot en met 256 nodes in stappen van 64. Dit zorgt voor een betere performance van het hypertuning model.
+We hebben ook gezien dat bij een laaggrootte van 64 het model gaat overfitten. Er is daarom voor gekozen om te hypertunen vanaf 128 tot en met 256 nodes in stappen van 64. Dit zorgt voor een betere performance van het hypertuning model en zorgt ervoor dat de zoekruimte stapsgewijs toeneemt.
 
-De dropout was te hoog in het eerste model (0,5). De searchspace van dit model gaat zoeken tussen 0 en 0.3 dropout.
+De dropout was te hoog in het eerste model (0,5). Dit zorgt voor erg slechte performance doordat de helft van de data wordt weggegooid. De searchspace voor de dropout is in dit model afgesteld op tussen de 0 en 0.3.
 
 
 ### 2b
 - Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in `reports/img`. Suggesties: `parallel_coordinates` kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.
 - reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.
 
-MM: Het is verrassend dat een model met een hogere dropout nog steeds redelijk ver komt.
+MM:In eerste instantie het hypertuning model de keuze gegeven tussen 2 of drie RNN lagen. Dit leidde tot dezastreuze performance (ruim 1,5 uur hypertunen) en heeft uiteindelijk de VM gecrasht (out of memory). 
 
-In eerste instantie het hypertuning model de keuze gegeven tussen 2 of drie RNN lagen. Dit leidde tot dezastreuze performance (ruim 1,5 uur hypertunen) en heeft uiteindelijk de VM gecrasht (out of memory). Daarna settings aangepast naar 2 lagen, en de keuze gegeven om een kleine dropout toe te passen. Met dit model een accuracy gehaald van 96%. met een kleine dropout. 
+Daarna de settings van de searchspace aangepast naar 2 lagen en de keuze gegeven om een kleine dropout (max 0,3) toe te passen. Met dit model een accuracy gehaald van 96,6%. met een kleine dropout van 0,19
 
-De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudige hypertuning model was in +-18 minuten klaar
+De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudige hypertuning model was in +-18 minuten klaar. Het andere hypertuning model heeft de eindstreep niet gehaald.
 
-Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.
+-Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.
+
+
+
 
 ### 2c
 - Zorg dat jouw prijswinnende settings in een config komen te staan in `settings.py`, en train daarmee een model met een optimaal aantal epochs, daarvoor kun je `01_model_design.py` kopieren en hernoemen naar `2c_model_design.py`.
