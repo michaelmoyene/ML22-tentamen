@@ -65,11 +65,12 @@ class GruSearchSpace(BaseSearchSpace):
     num_layers:Union[int,SAMPLE_FLOAT] = tune.choice([2])
     dropout: Union[float, SAMPLE_FLOAT] = tune.uniform(0.0, 0.3)
 
-class Winningru(BaseModel):
-    def __init__(self, input=13, output=20, h1=256, dropout=0.1905, num_layers=2):
-        self.input = input
-        self.output = output
-        self.h1 = h1
-        self.dropout = dropout
-        self.num_layers = num_layers
+#config results from the hypertuning exercise
 
+winninggruconfig = {
+    'input': 13,
+    'output': 20,
+    'h1': 256,
+    'dropout': 0.1905,
+    'num_layers': 2
+}

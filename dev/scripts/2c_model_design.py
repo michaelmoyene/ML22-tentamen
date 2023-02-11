@@ -14,16 +14,13 @@ if __name__ == "__main__":
 
     trainstreamer, teststreamer = datasets.get_arabic(presets)
 
-    from tentamen.model import GRUModel
-    from tentamen.settings import Winninggru
+    from tentamen.model import AttentionGRU
+    from tentamen.settings import winninggruconfig
 
-    configs = [
-        Winninggru(
-        ),
-    ]
+    configs = [winninggruconfig]
 
     for config in configs:
-        model = GRUModel(config.dict())  # type: ignore
+        model = AttentionGRU(config)  # type: ignore
 
         trainedmodel = trainloop(
             epochs=50,

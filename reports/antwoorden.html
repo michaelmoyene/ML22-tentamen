@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>antwoorden</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="antwoorden_files/libs/clipboard/clipboard.min.js"></script>
+<script src="antwoorden_files/libs/quarto-html/quarto.js"></script>
+<script src="antwoorden_files/libs/quarto-html/popper.min.js"></script>
+<script src="antwoorden_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="antwoorden_files/libs/quarto-html/anchor.min.js"></script>
+<link href="antwoorden_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="antwoorden_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="antwoorden_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="antwoorden_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="antwoorden_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="tentamen-ml2022-2023" class="level1">
+<h1>Tentamen ML2022-2023</h1>
+<p>De opdracht is om de audio van 10 cijfers, uitgesproken door zowel mannen als vrouwen, te classificeren. De dataset bevat timeseries met een wisselende lengte.</p>
+<p>In <a href="references/documentation.html">references/documentation.html</a> lees je o.a. dat elke timestep 13 features heeft. Jouw junior collega heeft een neuraal netwerk gebouwd, maar het lukt hem niet om de accuracy boven de 67% te krijgen. Aangezien jij de cursus Machine Learning bijna succesvol hebt afgerond hoopt hij dat jij een paar betere ideeen hebt.</p>
+<section id="vraag-1" class="level2">
+<h2 class="anchored" data-anchor-id="vraag-1">Vraag 1</h2>
+<section id="a" class="level3">
+<h3 class="anchored" data-anchor-id="a">1a</h3>
+<p>In <code>dev/scripts</code> vind je de file <code>01_model_design.py</code>. Het model in deze file heeft in de eerste hidden layer 100 units, in de tweede layer 10 units, dit heeft jouw collega ergens op stack overflow gevonden en hij had gelezen dat dit een goed model zou zijn. De dropout staat op 0.5, hij heeft in een blog gelezen dat dit de beste settings voor dropout zou zijn.</p>
+<ul>
+<li>Wat vind je van de architectuur die hij heeft uitgekozen (een Neuraal netwerk met drie Linear layers)? Wat zijn sterke en zwakke kanten van een model als dit in het algemeen? En voor dit specifieke probleem? MM: Lagen verkleinen snel. Voor: Snel resultaat, eenvoudig te maken. Tegen: Niet het beste model voor een RNN probleem. Geen gates en geen geheugen.</li>
+<li>Wat vind je van de keuzes die hij heeft gemaakt in de LinearConfig voor het aantal units ten opzichte van de data? En van de dropout? MM:</li>
+</ul>
+<p>input: De input van dit model is 13 features. Python telt vanaf 0, dus dit moet 12 zijn. h1: 100 hidden units is te hoog voor het aantal features. Hierdoor kan er overfitting ontstaan. Een vuistregel bij neurale netwerken is dat het aantal units niet meer dan twee keer zo groot is dan het aantal input units. In dit geval is het maximum dus 26. Door middel van trial en error kan het optimale aantal units gevonden worden. Je zou bijvoorbeeld kunnen werken met factoren (1,5x input en 2x de input) om het beste resultaat te vinden. h2: Verkleint het model te veel naar 10 units. Het aantal units wordt lager dan het aantal klassen. Hierdoor kun je nooit meer een goed eindresultaat bereiken. Output: staat op 20. Technisch gezien kan dit niet omdat de laag ervoor 13 nodes heeft. Een deel van de informatie in het model is dus al verdwenen. Het aantal klassen is wel juist. 10 getallen uitgesproken door een man of een vrouw Dropout: Dropout is erg hoog. De helft van de data wordt weggegooid. Gezien het formaat van de dataset lijkt mij dit wat veel. Er zijn in totaal 8800 observaties over 10 getallen (880 per getal). Als je de helft weggooit heb je er dus maar 4400 over. Voor machine learning begrippen is dit in verhouding weinig.</p>
+</section>
+</section>
+<section id="b" class="level2">
+<h2 class="anchored" data-anchor-id="b">1b</h2>
+<p>Als je in de forward methode van het Linear model kijkt (in <code>tentamen/model.py</code>) dan kun je zien dat het eerste dat hij doet <code>x.mean(dim=1)</code> is.</p>
+<ul>
+<li><p>Wat is het effect hiervan? Welk probleem probeert hij hier op te lossen? (maw, wat gaat er fout als hij dit niet doet?) MM: Een audio bestand is een bestand met 3 dimensies. Met x.mean rekent hij het gemiddelde uit over de tweede dimensie de batchsize. Door het gemiddelde te berekenen verminder je ruis die er ingevoerd wordt in de encoder. Daarnaast maak je het signaal duidelijker en wordt het model daardoor sneller. Het gemiddelde van deze tensor wordt vervolgens ingevoerd in de encoder.</p></li>
+<li><p>Hoe had hij dit ook kunnen oplossen? MM: Je kunt ook batchnormalisatie toepassen na de eerste laag om de data terug te brengen naar kleinere waarden.</p></li>
+<li><p>Wat zijn voor een nadelen van de verschillende manieren om deze stap te doen? MM: Bij de methode van de junior is goed te zien om welke dimensie het gaat in het model. Het is ook foutgevoelig en ‘hard coded’. Met batchnormalisatie gebeurt</p></li>
+</ul>
+<section id="c" class="level3">
+<h3 class="anchored" data-anchor-id="c">1c</h3>
+<p>Omdat jij de cursus Machine Learning hebt gevolgd kun jij hem uitstekend uitleggen wat een betere architectuur zou zijn.</p>
+<ul>
+<li>Beschrijf de architecturen die je kunt overwegen voor een probleem als dit. Het is voldoende als je beschrijft welke layers in welke combinaties je zou kunnen gebruiken. MM: Er zijn een aantal modellen geschikt voor dit type probleem. Je kunt een RNN gebruiken en varianten ervan (LTSM,GRU). Gezien de lengte van de audio bestanden zou een Gru goed passen. Door een attention laag toe te voegen can de accuracy wat verhoogd worden. Attention is een effectieve en efficiënte manier om meer context (weging) te geven aan de data.</li>
+</ul>
+<p>Een CNN model zou ook kunnen passen met conv1d lagen. Ik zou dan beginnen met een model met 2 CNN lagen, Relu en een avgpool functie. Gezien de beperkte lengte van de dataset zijn twee lagen voldoende. Een model dat dieper gaat voegt gezien het aantal klassen (10) waarschijnlijk weinig toe. Daarnaast is het de vraag of een CNN in een dataset met slechts 8800 observaties voldoende data heeft om goed uit de verf te komen</p>
+<ul>
+<li><p>Geef vervolgens een indicatie en motivatie voor het aantal units/filters/kernelsize etc voor elke laag die je gebruikt, en hoe je omgaat met overgangen (bv van 3 naar 2 dimensies). Een indicatie is bijvoorbeeld een educated guess voor een aantal units, plus een boven en ondergrens voor het aantal units. Met een motivatie laat je zien dat jouw keuze niet een random selectie is, maar dat je 1) andere problemen hebt gezien en dit probleem daartegen kunt afzetten en 2) een besef hebt van de consquenties van het kiezen van een range. MM: : ok zou ik kleine filters gebruiken (2x2) omdat de dataset klein is.</p></li>
+<li><p>Geef aan wat jij verwacht dat de meest veelbelovende architectuur is, en waarom (opnieuw, laat zien dat je niet random getallen noemt, of keuzes maakt, maar dat jij je keuze baseert op ervaring die je hebt opgedaan met andere problemen).</p></li>
+</ul>
+<p>Een gru met attention is waarschijnlijk het meest geschikte model. Dit model is erg goed in het herkennen van patronen en het in de context plaatsen van text zonder dat dit excessief veel computerkracht vergt.</p>
+</section>
+<section id="d" class="level3">
+<h3 class="anchored" data-anchor-id="d">1d</h3>
+<p>Implementeer jouw veelbelovende model:</p>
+<ul>
+<li><p>Maak in <code>model.py</code> een nieuw nn.Module met jouw architectuur : Concept laag geimplementeerd - RNN Gru model zonder attention layer.</p></li>
+<li><p>Maak in <code>settings.py</code> een nieuwe config voor jouw model: MM: Het settings bestand is bijgewerkt met de settings voor het GRU Model.</p></li>
+<li><p>Train het model met enkele educated guesses van parameters. Gezien de grootte van de dataset heb ik ervoor gekozen om de dropout op 0 te zetten. Ik wil het model trainen op alle (beperkte) data die er is. MM: Training 1: H1: 128, dropout: 0, num layers = 1. Accuracy: 0,938 MM: Training 2: H1: 128, dropout: 0, num layers = 2. Accuracy: 0.9421 MM: Training 3: H1: 64 , dropout: 0, num layers = 2. Accuracy: 0.9269 MM: Training 4: H1: 256, dropout: 0, num layers = 2. Accuracy: 0,9559</p></li>
+<li><p>Rapporteer je bevindingen. Ga hier niet te uitgebreid hypertunen (dat is vraag 2), maar rapporteer (met een afbeelding in <code>antwoorden/img</code> die je linkt naar jouw .md antwoord) voor bijvoorbeeld drie verschillende parametersets hoe de train/test loss curve verloopt.</p></li>
+</ul>
+<p>De hoogste accuracy wordt behaald met een RNN netwerk met twee lagen en 256 hidden nodes.</p>
+<p>Het 3e model laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit kan duiden op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.</p>
+<p>Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.</p>
+<p>Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.</p>
+##Image invoegen figure&gt;
+<p align="center">
+<img src="img/Metrics.png" style="width:50%">
+</p><figcaption align="center">
+<b> Fig 1.Een motivational poster voor studenten Machine Learning (Stable Diffusion)</b>
+</figcaption>
+<p></p>
+
+<ul>
+<li>reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.</li>
+</ul>
+<p>Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Het is een standaard GRU die al als resultaat 95% behaalt. Best goed.</p>
+<p>Hieronder een voorbeeld hoe je een plaatje met caption zou kunnen invoegen.</p>
+<figure class="figure">
+<p align="center">
+<img src="img/motivational.png" style="width:50%" class="figure-img">
+</p><figcaption align="center" class="figure-caption">
+<b> Fig 1.Een motivational poster voor studenten Machine Learning (Stable Diffusion)</b>
+</figcaption>
+<p></p>
+</figure>
+</section>
+</section>
+<section id="vraag-2" class="level2">
+<h2 class="anchored" data-anchor-id="vraag-2">Vraag 2</h2>
+<p>Een andere collega heeft alvast een hypertuning opgezet in <code>dev/scripts/02_tune.py</code>.</p>
+<section id="a-1" class="level3">
+<h3 class="anchored" data-anchor-id="a-1">2a</h3>
+<p>Implementeer de hypertuning voor jouw architectuur: - zorg dat je model geschikt is voor hypertuning -</p>
+<p>#Settings file aangepast ray tune.choice methode gebruikt om model te forceren om te kiezen tussen 1 of twee lagen. Halve lagen kunnen niet.</p>
+<ul>
+<li><p>je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.</p></li>
+<li><p>Stel dat je</p></li>
+<li><p>voeg jouw model in op de juiste plek in de <code>tune.py</code> file. RNN Gru model toegevoegd aan tune.py file</p></li>
+<li><p>maak een zoekruimte aan met behulp van pydantic (naar het voorbeeld van LinearSearchSpace), maar pas het aan voor jouw model. MM: Zoekruimte voor RNNgru ingevoegd in de settings file (Grusearchspace).</p></li>
+<li><p>Licht je keuzes toe: wat hypertune je, en wat niet? Waarom? En in welke ranges zoek je, en waarom? Zie ook de <a href="https://docs.ray.io/en/latest/tune/api_docs/search_space.html#tune-sample-docs">docs van ray over search space</a> en voor <a href="https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bohb-tune-search-bohb-tunebohb">rondom search algoritmes</a> voor meer opties en voorbeelden.</p></li>
+</ul>
+<p>In de verkennende fase is geconstateerd dat twee lagen een beter resultaat geeft dan 1 laag. In de hypertune file is de paramater 2 en 3 meegegeven om te meten of een 3e laag wat toevoegt.</p>
+<p>We hebben ook gezien dat bij een laaggrootte van 64 het model gaat overfitten. Er is daarom voor gekozen om te hypertunen vanaf 128 tot en met 256 nodes in stappen van 64. Dit zorgt voor een betere performance van het hypertuning model en zorgt ervoor dat de zoekruimte stapsgewijs toeneemt.</p>
+<p>De dropout was te hoog in het eerste model (0,5). Dit zorgt voor erg slechte performance doordat de helft van de data wordt weggegooid. De searchspace voor de dropout is in dit model afgesteld op tussen de 0 en 0.3.</p>
+</section>
+<section id="b-1" class="level3">
+<h3 class="anchored" data-anchor-id="b-1">2b</h3>
+<ul>
+<li>Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in <code>reports/img</code>. Suggesties: <code>parallel_coordinates</code> kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.</li>
+<li>reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.</li>
+</ul>
+<p>MM:In eerste instantie het hypertuning model de keuze gegeven tussen 2 of drie RNN lagen. Dit leidde tot dezastreuze performance (ruim 1,5 uur hypertunen) en heeft uiteindelijk de VM gecrasht (out of memory).</p>
+<p>Daarna de settings van de searchspace aangepast naar 2 lagen en de keuze gegeven om een kleine dropout (max 0,3) toe te passen. Met dit model een accuracy gehaald van 96,6%. met een kleine dropout van 0,19</p>
+<p>De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudige hypertuning model was in +-18 minuten klaar. Het andere hypertuning model heeft de eindstreep niet gehaald.</p>
+<p>-Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.</p>
+</section>
+<section id="c-1" class="level3">
+<h3 class="anchored" data-anchor-id="c-1">2c</h3>
+<ul>
+<li>Zorg dat jouw prijswinnende settings in een config komen te staan in <code>settings.py</code>, en train daarmee een model met een optimaal aantal epochs, daarvoor kun je <code>01_model_design.py</code> kopieren en hernoemen naar <code>2c_model_design.py</code>.</li>
+</ul>
+<p>MM: Settings.py bijwerken, model design.py</p>
+<p>MM: AttentionGru toegevoegd om te kijken of het winnende model nog beter kan worden!</p>
+</section>
+</section>
+<section id="vraag-3" class="level2">
+<h2 class="anchored" data-anchor-id="vraag-3">Vraag 3</h2>
+<section id="a-2" class="level3">
+<h3 class="anchored" data-anchor-id="a-2">3a</h3>
+<ul>
+<li>fork deze repository.</li>
+<li>Zorg voor nette code. Als je nu <code>make format &amp;&amp; make lint</code> runt, zie je dat alles ok is. Hoewel het in sommige gevallen prima is om een ignore toe te voegen, is de bedoeling dat je zorgt dat je code zoveel als mogelijk de richtlijnen volgt van de linters.</li>
+<li>We werken sinds 22 november met git, en ik heb een <code>git crash coruse.pdf</code> gedeeld in les 2. Laat zien dat je in git kunt werken, door een git repo aan te maken en jouw code daarheen te pushen. Volg de vuistregel dat je 1) vaak (ruwweg elke dertig minuten aan code) commits doet 2) kleine, logische chunks van code/files samenvoegt in een commit 3) geef duidelijke beschrijvende namen voor je commit messages</li>
+<li>Zorg voor duidelijke illustraties; voeg labels in voor x en y as, zorg voor eenheden op de assen, een titel, en als dat niet gaat (bv omdat het uit tensorboard komt) zorg dan voor een duidelijke caption van de afbeelding waar dat wel wordt uitgelegd.</li>
+<li>Laat zien dat je je vragen kort en bondig kunt beantwoorden. De antwoordstrategie “ik schiet met hagel en hoop dat het goede antwoord ertussen zit” levert minder punten op dan een kort antwoord waar je de essentie weet te vangen.</li>
+<li>nodig mij uit (github handle: raoulg) voor je repository.</li>
+</ul>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

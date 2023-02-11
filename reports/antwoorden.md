@@ -77,7 +77,14 @@ Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit mode
 
 Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.
 
-##Image invoegen
+<figure>
+  <p align = "center">
+    <img src="img/Metrics.png" style="width:50%">
+    <figcaption align="center">
+      <b> Fig 1. De vier modellen in Tensorboard</b>
+    </figcaption>
+  </p>
+</figure>
 
 
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
@@ -102,20 +109,17 @@ Een andere collega heeft alvast een hypertuning opgezet in `dev/scripts/02_tune.
 Implementeer de hypertuning voor jouw architectuur:
 - zorg dat je model geschikt is voor hypertuning - 
 
-#Settings file aangepast
-#To do: Ray Hypertuning.
-ray tune.choice methode gebruikt om model te forceren om te kiezen tussen 1 of twee lagen. Halve lagen kunnen niet.
-
-
-
-
+MM: Settings file aangepast voor hypertuning
+ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Halve lagen kunnen niet.
 
 - je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.
 - Stel dat je
 - voeg jouw model in op de juiste plek in de `tune.py` file.
+
 RNN Gru model toegevoegd aan tune.py file
 
 - maak een zoekruimte aan met behulp van pydantic (naar het voorbeeld van LinearSearchSpace), maar pas het aan voor jouw model.
+
 MM: Zoekruimte voor RNNgru ingevoegd in de settings file (Grusearchspace).
 
 - Licht je keuzes toe: wat hypertune je, en wat niet? Waarom? En in welke ranges zoek je, en waarom? Zie ook de [docs van ray over search space](https://docs.ray.io/en/latest/tune/api_docs/search_space.html#tune-sample-docs) en voor [rondom search algoritmes](https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bohb-tune-search-bohb-tunebohb) voor meer opties en voorbeelden.
@@ -129,11 +133,14 @@ De dropout was te hoog in het eerste model (0,5). Dit zorgt voor erg slechte per
 
 ### 2b
 - Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in `reports/img`. Suggesties: `parallel_coordinates` kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.
+
+MM: Afbeeldingen invoegen voor Hypertuning.
+
 - reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.
 
-MM:In eerste instantie het hypertuning model de keuze gegeven tussen 2 of drie RNN lagen. Dit leidde tot dezastreuze performance (ruim 1,5 uur hypertunen) en heeft uiteindelijk de VM gecrasht (out of memory). 
+MM:In eerste instantie het hypertuning model de keuze gegeven tussen 2 of drie RNN lagen. Dit leidde tot dramatische performance (ruim 1,5 uur hypertunen) en heeft uiteindelijk de VM gecrasht (out of memory). 
 
-Daarna de settings van de searchspace aangepast naar 2 lagen en de keuze gegeven om een kleine dropout (max 0,3) toe te passen. Met dit model een accuracy gehaald van 96,6%. met een kleine dropout van 0,19
+Daarna de settings van de searchspace aangepast naar 2 lagen en de keuze gegeven om een kleine dropout (max 0,3) toe te passen. Met dit model een accuracy gehaald van 96,6%. met een kleine dropout van 0,19. 
 
 De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudige hypertuning model was in +-18 minuten klaar. Het andere hypertuning model heeft de eindstreep niet gehaald.
 
@@ -147,10 +154,17 @@ De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudig
 
 MM: Settings.py bijwerken, model design.py
 
+MM: AttentionGru toegevoegd om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 98%.
+
 ## Vraag 3
 ### 3a
 - fork deze repository.
+MM: Gedaan
+
 - Zorg voor nette code. Als je nu `make format && make lint` runt, zie je dat alles ok is. Hoewel het in sommige gevallen prima is om een ignore toe te voegen, is de bedoeling dat je zorgt dat je code zoveel als mogelijk de richtlijnen volgt van de linters.
+
+MM: Todo
+
 - We werken sinds 22 november met git, en ik heb een `git crash coruse.pdf` gedeeld in les 2. Laat zien dat je in git kunt werken, door een git repo aan te maken en jouw code daarheen te pushen. Volg de vuistregel dat je 1) vaak (ruwweg elke dertig minuten aan code) commits doet 2) kleine, logische chunks van code/files samenvoegt in een commit 3) geef duidelijke beschrijvende namen voor je commit messages
 - Zorg voor duidelijke illustraties; voeg labels in voor x en y as, zorg voor eenheden op de assen, een titel, en als dat niet gaat (bv omdat het uit tensorboard komt) zorg dan voor een duidelijke caption van de afbeelding waar dat wel wordt uitgelegd.
 - Laat zien dat je je vragen kort en bondig kunt beantwoorden. De antwoordstrategie "ik schiet met hagel en hoop dat het goede antwoord ertussen zit" levert minder punten op dan een kort antwoord waar je de essentie weet te vangen. 
