@@ -92,30 +92,30 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Rapporteer je bevindingen. Ga hier niet te uitgebreid hypertunen (dat is vraag 2), maar rapporteer (met een afbeelding in <code>antwoorden/img</code> die je linkt naar jouw .md antwoord) voor bijvoorbeeld drie verschillende parametersets hoe de train/test loss curve verloopt.</p></li>
 </ul>
 <p>De hoogste accuracy wordt behaald met een RNN netwerk met twee lagen en 256 hidden nodes.</p>
-<p>Het 3e model laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit kan duiden op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.</p>
-<p>Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.</p>
-<p>Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.</p>
-##Image invoegen figure&gt;
+<figure class="figure">
 <p align="center">
-<img src="img/Metrics.png" style="width:50%">
-</p><figcaption align="center">
-<b> Fig 1.Een motivational poster voor studenten Machine Learning (Stable Diffusion)</b>
+<img src="img/Metrics.png" style="width:100%" class="figure-img">
+</p><figcaption align="center" class="figure-caption">
+<b> Fig 1. De performance van de vier modellen in Tensorboard</b>
 </figcaption>
 <p></p>
-
+</figure>
+<p>Het 3e model laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit kan duiden op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.</p>
+<p>Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.</p>
+<figure class="figure">
+<p align="center">
+<img src="img/Overfitting.png" style="width:100%" class="figure-img">
+</p><figcaption align="center" class="figure-caption">
+<b> Fig 2. Overfitting van model 1 en 3</b>
+</figcaption>
+<p></p>
+</figure>
+<p>Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.</p>
 <ul>
 <li>reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.</li>
 </ul>
 <p>Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Het is een standaard GRU die al als resultaat 95% behaalt. Best goed.</p>
 <p>Hieronder een voorbeeld hoe je een plaatje met caption zou kunnen invoegen.</p>
-<figure class="figure">
-<p align="center">
-<img src="img/motivational.png" style="width:50%" class="figure-img">
-</p><figcaption align="center" class="figure-caption">
-<b> Fig 1.Een motivational poster voor studenten Machine Learning (Stable Diffusion)</b>
-</figcaption>
-<p></p>
-</figure>
 </section>
 </section>
 <section id="vraag-2" class="level2">
@@ -124,13 +124,19 @@ ul.task-list li input[type="checkbox"] {
 <section id="a-1" class="level3">
 <h3 class="anchored" data-anchor-id="a-1">2a</h3>
 <p>Implementeer de hypertuning voor jouw architectuur: - zorg dat je model geschikt is voor hypertuning -</p>
-<p>#Settings file aangepast ray tune.choice methode gebruikt om model te forceren om te kiezen tussen 1 of twee lagen. Halve lagen kunnen niet.</p>
+<p>MM: Settings file aangepast voor hypertuning ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Halve lagen kunnen niet.</p>
 <ul>
-<li><p>je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.</p></li>
-<li><p>Stel dat je</p></li>
-<li><p>voeg jouw model in op de juiste plek in de <code>tune.py</code> file. RNN Gru model toegevoegd aan tune.py file</p></li>
-<li><p>maak een zoekruimte aan met behulp van pydantic (naar het voorbeeld van LinearSearchSpace), maar pas het aan voor jouw model. MM: Zoekruimte voor RNNgru ingevoegd in de settings file (Grusearchspace).</p></li>
-<li><p>Licht je keuzes toe: wat hypertune je, en wat niet? Waarom? En in welke ranges zoek je, en waarom? Zie ook de <a href="https://docs.ray.io/en/latest/tune/api_docs/search_space.html#tune-sample-docs">docs van ray over search space</a> en voor <a href="https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bohb-tune-search-bohb-tunebohb">rondom search algoritmes</a> voor meer opties en voorbeelden.</p></li>
+<li>je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.</li>
+<li>Stel dat je</li>
+<li>voeg jouw model in op de juiste plek in de <code>tune.py</code> file.</li>
+</ul>
+<p>RNN Gru model toegevoegd aan tune.py file</p>
+<ul>
+<li>maak een zoekruimte aan met behulp van pydantic (naar het voorbeeld van LinearSearchSpace), maar pas het aan voor jouw model.</li>
+</ul>
+<p>MM: Zoekruimte voor RNNgru ingevoegd in de settings file (Grusearchspace).</p>
+<ul>
+<li>Licht je keuzes toe: wat hypertune je, en wat niet? Waarom? En in welke ranges zoek je, en waarom? Zie ook de <a href="https://docs.ray.io/en/latest/tune/api_docs/search_space.html#tune-sample-docs">docs van ray over search space</a> en voor <a href="https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bohb-tune-search-bohb-tunebohb">rondom search algoritmes</a> voor meer opties en voorbeelden.</li>
 </ul>
 <p>In de verkennende fase is geconstateerd dat twee lagen een beter resultaat geeft dan 1 laag. In de hypertune file is de paramater 2 en 3 meegegeven om te meten of een 3e laag wat toevoegt.</p>
 <p>We hebben ook gezien dat bij een laaggrootte van 64 het model gaat overfitten. Er is daarom voor gekozen om te hypertunen vanaf 128 tot en met 256 nodes in stappen van 64. Dit zorgt voor een betere performance van het hypertuning model en zorgt ervoor dat de zoekruimte stapsgewijs toeneemt.</p>
@@ -140,20 +146,25 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="b-1">2b</h3>
 <ul>
 <li>Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in <code>reports/img</code>. Suggesties: <code>parallel_coordinates</code> kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.</li>
+</ul>
+<p>MM: Afbeeldingen invoegen voor Hypertuning.</p>
+<ul>
 <li>reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.</li>
 </ul>
-<p>MM:In eerste instantie het hypertuning model de keuze gegeven tussen 2 of drie RNN lagen. Dit leidde tot dezastreuze performance (ruim 1,5 uur hypertunen) en heeft uiteindelijk de VM gecrasht (out of memory).</p>
-<p>Daarna de settings van de searchspace aangepast naar 2 lagen en de keuze gegeven om een kleine dropout (max 0,3) toe te passen. Met dit model een accuracy gehaald van 96,6%. met een kleine dropout van 0,19</p>
+<p>MM:In eerste instantie het hypertuning model de keuze gegeven tussen 2 of drie RNN lagen. Dit leidde tot dramatische performance (ruim 1,5 uur hypertunen) en heeft uiteindelijk de VM gecrasht (out of memory).</p>
+<p>Daarna de settings van de searchspace aangepast naar 2 lagen en de keuze gegeven om een kleine dropout (max 0,3) toe te passen. Met dit model een accuracy gehaald van 96,6%. met een kleine dropout van 0,19.</p>
 <p>De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudige hypertuning model was in +-18 minuten klaar. Het andere hypertuning model heeft de eindstreep niet gehaald.</p>
 <p>-Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.</p>
+<p>MM: Hypertuning afbeeldingen invoegen.</p>
 </section>
 <section id="c-1" class="level3">
 <h3 class="anchored" data-anchor-id="c-1">2c</h3>
 <ul>
 <li>Zorg dat jouw prijswinnende settings in een config komen te staan in <code>settings.py</code>, en train daarmee een model met een optimaal aantal epochs, daarvoor kun je <code>01_model_design.py</code> kopieren en hernoemen naar <code>2c_model_design.py</code>.</li>
 </ul>
-<p>MM: Settings.py bijwerken, model design.py</p>
-<p>MM: AttentionGru toegevoegd om te kijken of het winnende model nog beter kan worden!</p>
+<p>MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt.</p>
+<p>Maar er is meer: Attention!</p>
+<p>MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden.AttentionGru toegevoegd om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 98%.</p>
 </section>
 </section>
 <section id="vraag-3" class="level2">
@@ -161,13 +172,26 @@ ul.task-list li input[type="checkbox"] {
 <section id="a-2" class="level3">
 <h3 class="anchored" data-anchor-id="a-2">3a</h3>
 <ul>
-<li>fork deze repository.</li>
-<li>Zorg voor nette code. Als je nu <code>make format &amp;&amp; make lint</code> runt, zie je dat alles ok is. Hoewel het in sommige gevallen prima is om een ignore toe te voegen, is de bedoeling dat je zorgt dat je code zoveel als mogelijk de richtlijnen volgt van de linters.</li>
+<li><p>fork deze repository. MM: Gedaan</p></li>
+<li><p>Zorg voor nette code. Als je nu <code>make format &amp;&amp; make lint</code> runt, zie je dat alles ok is. Hoewel het in sommige gevallen prima is om een ignore toe te voegen, is de bedoeling dat je zorgt dat je code zoveel als mogelijk de richtlijnen volgt van de linters.</p></li>
+</ul>
+<p>MM: Todo</p>
+<ul>
 <li>We werken sinds 22 november met git, en ik heb een <code>git crash coruse.pdf</code> gedeeld in les 2. Laat zien dat je in git kunt werken, door een git repo aan te maken en jouw code daarheen te pushen. Volg de vuistregel dat je 1) vaak (ruwweg elke dertig minuten aan code) commits doet 2) kleine, logische chunks van code/files samenvoegt in een commit 3) geef duidelijke beschrijvende namen voor je commit messages</li>
+</ul>
+<p>MM: Gedaan.</p>
+<ul>
 <li>Zorg voor duidelijke illustraties; voeg labels in voor x en y as, zorg voor eenheden op de assen, een titel, en als dat niet gaat (bv omdat het uit tensorboard komt) zorg dan voor een duidelijke caption van de afbeelding waar dat wel wordt uitgelegd.</li>
+</ul>
+<p>MM: To do</p>
+<ul>
 <li>Laat zien dat je je vragen kort en bondig kunt beantwoorden. De antwoordstrategie “ik schiet met hagel en hoop dat het goede antwoord ertussen zit” levert minder punten op dan een kort antwoord waar je de essentie weet te vangen.</li>
+</ul>
+<p>MM: To do</p>
+<ul>
 <li>nodig mij uit (github handle: raoulg) voor je repository.</li>
 </ul>
+<p>MM: Gedaan</p>
 </section>
 </section>
 </section>

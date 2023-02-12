@@ -71,20 +71,32 @@ MM: Training 4: H1: 256, dropout: 0, num layers = 2. Accuracy: 0,9559
 
 De hoogste accuracy wordt behaald met een RNN netwerk met twee lagen en 256 hidden nodes. 
 
+<figure>
+  <p align = "center">
+    <img src="img/Metrics.png" style="width:100%">
+    <figcaption align="center">
+      <b> Fig 1. De performance van de vier modellen in Tensorboard</b>
+    </figcaption>
+  </p>
+</figure>
+
 Het 3e model laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit kan duiden op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.
 
 Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.
 
-Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.
-
 <figure>
   <p align = "center">
-    <img src="img/Metrics.png" style="width:50%">
+    <img src="img/Overfitting.png" style="width:100%">
     <figcaption align="center">
-      <b> Fig 1. De vier modellen in Tensorboard</b>
+      <b> Fig 2. Overfitting van model 1 en 3</b>
     </figcaption>
   </p>
 </figure>
+
+
+Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.
+
+
 
 
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
@@ -92,15 +104,6 @@ Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitt
 Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Het is een standaard GRU die al als resultaat 95% behaalt. Best goed.
 
 Hieronder een voorbeeld hoe je een plaatje met caption zou kunnen invoegen.
-
-<figure>
-  <p align = "center">
-    <img src="img/motivational.png" style="width:50%">
-    <figcaption align="center">
-      <b> Fig 1.Een motivational poster voor studenten Machine Learning (Stable Diffusion)</b>
-    </figcaption>
-  </p>
-</figure>
 
 ## Vraag 2
 Een andere collega heeft alvast een hypertuning opgezet in `dev/scripts/02_tune.py`.
@@ -146,15 +149,21 @@ De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudig
 
 -Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.
 
+MM: Hypertuning afbeeldingen invoegen.
+
 
 
 
 ### 2c
 - Zorg dat jouw prijswinnende settings in een config komen te staan in `settings.py`, en train daarmee een model met een optimaal aantal epochs, daarvoor kun je `01_model_design.py` kopieren en hernoemen naar `2c_model_design.py`.
 
-MM: Settings.py bijwerken, model design.py
+MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt.
 
-MM: AttentionGru toegevoegd om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 98%.
+Maar er is meer: Attention!
+
+MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden.AttentionGru toegevoegd om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 98%.
+
+
 
 ## Vraag 3
 ### 3a
