@@ -13,9 +13,10 @@ Het model in deze file heeft in de eerste hidden layer 100 units, in de tweede l
 De dropout staat op 0.5, hij heeft in een blog gelezen dat dit de beste settings voor dropout zou zijn.
 
 - Wat vind je van de architectuur die hij heeft uitgekozen (een Neuraal netwerk met drie Linear layers)? Wat zijn sterke en zwakke kanten van een model als dit in het algemeen? En voor dit specifieke probleem?
-MM:  Voor: Met een lineair model heb je snel resultaat. Het is ook vrij eenvoudig te maken. 
 
-Tegen: Een lineair model is een algemeen model voor machine learning. Over de tijd zijn er betere modellen ontwikkeld die beter passen bij dit probleem. Dit is een audio probleem met een tijds-as waarbij er geluidsgevolgen geanalyseerd moeten worden. Een RNN netwerk is hier beter geschikt voor. Een RNN heeft bijvoorbeeld een tijdelijk geheugen waarbij er afhankelijkheden en patronen onthouden kunnen worden. Een lineair netwerk heeft dit niet.
+MM:  Voor: Met een lineair model heb je snel resultaat. Het is ook vrij eenvoudig te maken en te configureren. Ook is het toe te passen op verschillende machine learning problemen bijvoorbeeld beeld of audio.
+
+Tegen: Een lineair model is een algemeen model voor machine learning. Over de tijd zijn er betere modellen ontwikkeld die beter passen bij dit probleem. Dit is een audio probleem met een tijds-as waarbij er geluidsgolven geanalyseerd moeten worden. Een RNN netwerk is hier beter geschikt voor. Een RNN heeft bijvoorbeeld een tijdelijk geheugen waarbij er afhankelijkheden en patronen onthouden kunnen worden. Een lineair netwerk heeft dit niet.
 
 - Wat vind je van de keuzes die hij heeft gemaakt in de LinearConfig voor het aantal units ten opzichte van de data? En van de dropout?
 
@@ -36,9 +37,10 @@ MM: Een audio bestand is een bestand met 3 dimensies. Met x.mean rekent hij het 
 MM: Hij had hiervoor ook feature extraction kunnen gebruiken om het om te zetten naar MFCC (Mel-Frequency Cepstral Coefficients)  doormiddel van de Pytorch audio package.
 
 - Wat zijn voor een nadelen van de verschillende manieren om deze stap te doen?
-MM: Bij de methode van de junior is goed te zien om welke dimensie het gaat in het model en het is eenvoudig uit te voeren. Het is een eenvoudige manier om de dimensionaliteit van de dataset te verminderen
+MM: Voordeel: Het is eenvoudig uit te voeren en je hebt snel resultaat. Nadeel: Je verliest details en nuances in de dataset. Het is vergelijkbaar met het hanteren van een 'botte bijl'.
 
-Een pytorch audio MFCC heeft meer code en configuratie nodig. Er is ook meer kennis voor nodig om het goed in te stellen. Het voordeel hiervan is wel dat je meer detail behoudt van het audiobestand en het dus geschikter is om diepgaande analyses te doen.
+Nadeel: Een pytorch audio MFCC heeft meer code en configuratie nodig. Er is ook meer kennis voor nodig om het goed in te stellen. 
+Voordeel van Pytorch audio: Het voordeel hiervan is wel dat je meer detail behoudt van het audiobestand en het dus geschikter is om diepgaande analyses te doen.
 
 ### 1c
 Omdat jij de cursus Machine Learning hebt gevolgd kun jij hem uitstekend uitleggen wat een betere architectuur zou zijn.
@@ -47,7 +49,7 @@ Omdat jij de cursus Machine Learning hebt gevolgd kun jij hem uitstekend uitlegg
 
 MM: Er zijn een aantal modellen geschikt voor dit type probleem. Je kunt een RNN gebruiken en varianten ervan (LTSM,GRU). Gezien de lengte van de audio bestanden zou een Gru goed passen. Door een attention laag toe te voegen can de accuracy wat verhoogd worden. Attention is een effectieve en efficiënte manier om meer context (weging) te geven aan de data.
 
-Een CNN model zou ook kunnen passen met conv1d lagen. Ik zou dan beginnen met een model met 2 CNN lagen, Relu en een avgpool functie. Gezien de beperkte lengte van de dataset zijn twee lagen voldoende. Een model dat dieper gaat voegt gezien het aantal klassen (10) waarschijnlijk weinig toe. Daarnaast is het de vraag of een CNN in een dataset met slechts 8800 observaties voldoende data heeft om goed uit de verf te komen
+Een CNN model zou ook kunnen passen met conv1d lagen. Ik zou dan beginnen met een model met 2 CNN lagen, Relu en een avgpool functie. Gezien de beperkte lengte van de dataset zijn twee lagen voldoende. Een model dat dieper gaat voegt gezien het aantal klassen (20) en features waarschijnlijk weinig toe. Daarnaast is het de vraag of een CNN in een dataset met slechts 8800 observaties voldoende data heeft om goed uit de verf te komen.
 
 - Geef vervolgens een indicatie en motivatie voor het aantal units/filters/kernelsize etc voor elke laag die je gebruikt, en hoe je omgaat met overgangen (bv van 3 naar 2 dimensies). Een indicatie is bijvoorbeeld een educated guess voor een aantal units, plus een boven en ondergrens voor het aantal units. Met een motivatie laat je zien dat jouw keuze niet een random selectie is, maar dat je 1) andere problemen hebt gezien en dit probleem daartegen kunt afzetten en 2) een besef hebt van de consquenties van het kiezen van een range.
 
@@ -96,7 +98,7 @@ De hoogste accuracy wordt behaald met een RNN netwerk met twee lagen en 256 hidd
   </p>
 </figure>
 
-Het 3e model laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit kan duiden op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.
+Model 3 laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit duidt op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.
 
 Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.
 
@@ -114,9 +116,9 @@ Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitt
 
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
 
-Het is opvallend dat filters zo snel  leiden tot overfitting omdat de de dataset beschikt over 13 features. Een layer size van 64 is ongeveer 5 keer zo groot. Het is ook interessant om te zien dat 1 laag echt te weinig is om een goede analyse te doen. Ook met een hidden layer size van 128 is één laag te weinig om een goed machine learning model te maken. Dit model laat ook overfitting zit net zoals het model met layer size 64 met twee lagen.
+Het is opvallend dat een hidden layer size van 64 zo snel leidt tot overfitting, het is duidelijk een te 'krappe' configuratie van het Gru model. Het is ook interessant om te zien dat 1 laag echt te weinig is om een goede analyse te doen. Ook met een hidden layer size van 128 is één laag te weinig om een goed machine learning model te maken. Dit model laat ook overfitting zit net zoals het model met layer size 64 met twee lagen.
 
-Een model met twee lagen presteert beduidend beter en haalt een hoge accuracy van 95%. De settings voor hypertuning zullen dus minimaal twee lagen hebben en een layer size van 128.
+Een model met twee lagen presteert beduidend beter en haalt een hoge accuracy van 95%. De settings voor hypertuning zullen dus minimaal twee lagen hebben en een hidden layer size van 128.
 
 ## Vraag 2
 Een andere collega heeft alvast een hypertuning opgezet in `dev/scripts/02_tune.py`.
@@ -158,7 +160,7 @@ MM: Onderstaand een parallel plot van het Ray experiment
   <p align = "center">
     <img src="img/parallel_ray.png" style="width:100%">
     <figcaption align="center">
-      <b> Fig 2. Parallel tuning chart van Ray</b>
+      <b> Fig 3. Parallel tuning chart van Ray</b>
     </figcaption>
   </p>
 </figure>
@@ -181,7 +183,7 @@ MM: Op de onderstaande afbeelding kun je goed zien hoe Ray experimenten beeindig
   <p align = "center">
     <img src="img/Raytestloss.png" style="width:100%">
     <figcaption align="center">
-      <b> Fig 3. Parallel tuning chart van Ray</b>
+      <b> Fig 4. Parallel tuning chart van Ray</b>
     </figcaption>
   </p>
 </figure>
@@ -192,11 +194,24 @@ Zodra de test/loss functie begint te stijgen kapt Ray het lopende experiment af.
 ### 2c
 - Zorg dat jouw prijswinnende settings in een config komen te staan in `settings.py`, en train daarmee een model met een optimaal aantal epochs, daarvoor kun je `01_model_design.py` kopieren en hernoemen naar `2c_model_design.py`.
 
-MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt.
+MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt. Model getraind op 50 epochs. Accuracy van 0,9577
 
 Maar er is meer: Attention!
 
-MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden. AttentionGru toegevoegd aan 'model.py' om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 98%.
+MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden. AttentionGru toegevoegd aan 'model.py' om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 0,9844
+
+Onderstaand een afbeelding van the WinningGru met en zonder attention
+
+<figure>
+  <p align = "center">
+    <img src="img/Gruattention.png" style="width:100%">
+    <figcaption align="center">
+      <b> Fig 4. Winning Gru VS Winning Gru Attention</b>
+    </figcaption>
+  </p>
+</figure>
+
+In de afbeelding is duidelijk te zien dat de Winningru met attention (Gele lijn) sneller leert en beter preseert op de test/loss functie. Door het toevoegen van de attention laag is de leersnelheid dus iets toegenomen en de accuracy verhoogd met circa 3%.
 
 ## Vraag 3
 ### 3a
@@ -213,11 +228,11 @@ MM: Gedaan.
 
 - Zorg voor duidelijke illustraties; voeg labels in voor x en y as, zorg voor eenheden op de assen, een titel, en als dat niet gaat (bv omdat het uit tensorboard komt) zorg dan voor een duidelijke caption van de afbeelding waar dat wel wordt uitgelegd.
 
-MM: To do
+MM: Gedaan
 
 - Laat zien dat je je vragen kort en bondig kunt beantwoorden. De antwoordstrategie "ik schiet met hagel en hoop dat het goede antwoord ertussen zit" levert minder punten op dan een kort antwoord waar je de essentie weet te vangen. 
 
-MM: To do
+MM: Gedaan
 
 - nodig mij uit (github handle: raoulg) voor je repository. 
 

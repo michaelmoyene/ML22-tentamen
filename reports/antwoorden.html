@@ -55,9 +55,10 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="a">1a</h3>
 <p>In <code>dev/scripts</code> vind je de file <code>01_model_design.py</code>. Het model in deze file heeft in de eerste hidden layer 100 units, in de tweede layer 10 units, dit heeft jouw collega ergens op stack overflow gevonden en hij had gelezen dat dit een goed model zou zijn. De dropout staat op 0.5, hij heeft in een blog gelezen dat dit de beste settings voor dropout zou zijn.</p>
 <ul>
-<li>Wat vind je van de architectuur die hij heeft uitgekozen (een Neuraal netwerk met drie Linear layers)? Wat zijn sterke en zwakke kanten van een model als dit in het algemeen? En voor dit specifieke probleem? MM: Voor: Met een lineair model heb je snel resultaat. Het is ook vrij eenvoudig te maken.</li>
+<li>Wat vind je van de architectuur die hij heeft uitgekozen (een Neuraal netwerk met drie Linear layers)? Wat zijn sterke en zwakke kanten van een model als dit in het algemeen? En voor dit specifieke probleem?</li>
 </ul>
-<p>Tegen: Een lineair model is een algemeen model voor machine learning. Over de tijd zijn er betere modellen ontwikkeld die beter passen bij dit probleem. Dit is een audio probleem met een tijds-as waarbij er geluidsgevolgen geanalyseerd moeten worden. Een RNN netwerk is hier beter geschikt voor. Een RNN heeft bijvoorbeeld een tijdelijk geheugen waarbij er afhankelijkheden en patronen onthouden kunnen worden. Een lineair netwerk heeft dit niet.</p>
+<p>MM: Voor: Met een lineair model heb je snel resultaat. Het is ook vrij eenvoudig te maken en te configureren. Ook is het toe te passen op verschillende machine learning problemen bijvoorbeeld beeld of audio.</p>
+<p>Tegen: Een lineair model is een algemeen model voor machine learning. Over de tijd zijn er betere modellen ontwikkeld die beter passen bij dit probleem. Dit is een audio probleem met een tijds-as waarbij er geluidsgolven geanalyseerd moeten worden. Een RNN netwerk is hier beter geschikt voor. Een RNN heeft bijvoorbeeld een tijdelijk geheugen waarbij er afhankelijkheden en patronen onthouden kunnen worden. Een lineair netwerk heeft dit niet.</p>
 <ul>
 <li>Wat vind je van de keuzes die hij heeft gemaakt in de LinearConfig voor het aantal units ten opzichte van de data? En van de dropout?</li>
 </ul>
@@ -70,9 +71,9 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><p>Wat is het effect hiervan? Welk probleem probeert hij hier op te lossen? (maw, wat gaat er fout als hij dit niet doet?) MM: Een audio bestand is een bestand met 3 dimensies. Met x.mean rekent hij het gemiddelde uit over de tweede dimensie de batchsize. Door het gemiddelde te berekenen verminder je ruis die er ingevoerd wordt in de encoder. Daarnaast maak je het signaal duidelijker en wordt het model daardoor sneller. Het gemiddelde van deze tensor wordt vervolgens ingevoerd in de encoder.</p></li>
 <li><p>Hoe had hij dit ook kunnen oplossen? MM: Hij had hiervoor ook feature extraction kunnen gebruiken om het om te zetten naar MFCC (Mel-Frequency Cepstral Coefficients) doormiddel van de Pytorch audio package.</p></li>
-<li><p>Wat zijn voor een nadelen van de verschillende manieren om deze stap te doen? MM: Bij de methode van de junior is goed te zien om welke dimensie het gaat in het model en het is eenvoudig uit te voeren. Het is een eenvoudige manier om de dimensionaliteit van de dataset te verminderen</p></li>
+<li><p>Wat zijn voor een nadelen van de verschillende manieren om deze stap te doen? MM: Voordeel: Het is eenvoudig uit te voeren en je hebt snel resultaat. Nadeel: Je verliest details en nuances in de dataset. Het is vergelijkbaar met het hanteren van een ‘botte bijl’.</p></li>
 </ul>
-<p>Een pytorch audio MFCC heeft meer code en configuratie nodig. Er is ook meer kennis voor nodig om het goed in te stellen. Het voordeel hiervan is wel dat je meer detail behoudt van het audiobestand en het dus geschikter is om diepgaande analyses te doen.</p>
+<p>Nadeel: Een pytorch audio MFCC heeft meer code en configuratie nodig. Er is ook meer kennis voor nodig om het goed in te stellen. Voordeel van Pytorch audio: Het voordeel hiervan is wel dat je meer detail behoudt van het audiobestand en het dus geschikter is om diepgaande analyses te doen.</p>
 <section id="c" class="level3">
 <h3 class="anchored" data-anchor-id="c">1c</h3>
 <p>Omdat jij de cursus Machine Learning hebt gevolgd kun jij hem uitstekend uitleggen wat een betere architectuur zou zijn.</p>
@@ -141,11 +142,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="a-1" class="level3">
 <h3 class="anchored" data-anchor-id="a-1">2a</h3>
 <p>Implementeer de hypertuning voor jouw architectuur: - zorg dat je model geschikt is voor hypertuning -</p>
-<p>MM: Settings file aangepast voor hypertuning ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Je wilt dat hypertuning plaatsvindt op hele lagen, anders geeft dat problemen.</p>
+<p>MM: Settings file aangepast voor hypertuning Ik heb ook ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Je wilt dat hypertuning plaatsvindt op hele lagen, anders geeft dat problemen met het model.</p>
 <ul>
 <li>je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.</li>
 </ul>
-<p>MM: model.py bijgewerkt</p>
+<p>MM: In dit stadium geeft 1d daar geen aanleiding toe. 95% vind ik een goed resultaat voor een eerste poging.</p>
 <ul>
 <li>voeg jouw model in op de juiste plek in de <code>tune.py</code> file.</li>
 </ul>
@@ -175,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 </figcaption>
 <p></p>
 </figure>
-<p>In de bovenstaande chart kun je goed zien dat modellen met een hoger hidden layer size beter presteren dan een modellen met een kleinere layer size. Ik zie je dat een te hoge dropout (Blauwe lijn), zorg voor een veel slechtere performance van het model. O</p>
+<p>In de bovenstaande chart kun je goed zien dat modellen met een hoger hidden layer size beter presteren dan een modellen met een kleinere layer size. Ik zie je dat een te hoge dropout (Blauwe lijn), zorg voor een veel slechtere performance van het model.</p>
 <ul>
 <li>reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.</li>
 </ul>
@@ -220,11 +221,11 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Zorg voor duidelijke illustraties; voeg labels in voor x en y as, zorg voor eenheden op de assen, een titel, en als dat niet gaat (bv omdat het uit tensorboard komt) zorg dan voor een duidelijke caption van de afbeelding waar dat wel wordt uitgelegd.</li>
 </ul>
-<p>MM: To do</p>
+<p>MM: Gedaan</p>
 <ul>
 <li>Laat zien dat je je vragen kort en bondig kunt beantwoorden. De antwoordstrategie “ik schiet met hagel en hoop dat het goede antwoord ertussen zit” levert minder punten op dan een kort antwoord waar je de essentie weet te vangen.</li>
 </ul>
-<p>MM: To do</p>
+<p>MM: Gedaan</p>
 <ul>
 <li>nodig mij uit (github handle: raoulg) voor je repository.</li>
 </ul>
