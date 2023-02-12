@@ -114,8 +114,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.</li>
 </ul>
-<p>Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Het is een standaard GRU die al als resultaat 95% behaalt. Best goed.</p>
-<p>Hieronder een voorbeeld hoe je een plaatje met caption zou kunnen invoegen.</p>
+<p>Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting omdat de de data beschikt over 13 features. Een layer size van 64 is ongeveer 5 keer zo groot. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Een standaard GRU met twee lagen behaalt al een accuracy van 95%.</p>
 </section>
 </section>
 <section id="vraag-2" class="level2">
@@ -124,10 +123,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="a-1" class="level3">
 <h3 class="anchored" data-anchor-id="a-1">2a</h3>
 <p>Implementeer de hypertuning voor jouw architectuur: - zorg dat je model geschikt is voor hypertuning -</p>
-<p>MM: Settings file aangepast voor hypertuning ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Halve lagen kunnen niet.</p>
+<p>MM: Settings file aangepast voor hypertuning ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Je wilt dat hypertuning plaatsvindt op hele lagen, anders geeft dat problemen.</p>
 <ul>
 <li>je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.</li>
-<li>Stel dat je</li>
+</ul>
+<p>MM: model.py bijgewerkt</p>
+<ul>
 <li>voeg jouw model in op de juiste plek in de <code>tune.py</code> file.</li>
 </ul>
 <p>RNN Gru model toegevoegd aan tune.py file</p>
@@ -147,7 +148,16 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in <code>reports/img</code>. Suggesties: <code>parallel_coordinates</code> kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.</li>
 </ul>
-<p>MM: Afbeeldingen invoegen voor Hypertuning.</p>
+<p>MM: Onderstaand een parallel plot van het Ray experiment</p>
+<figure class="figure">
+<p align="center">
+<img src="img/parallel_ray.png" style="width:100%" class="figure-img">
+</p><figcaption align="center" class="figure-caption">
+<b> Fig 2. Parallel tuning chart van Ray</b>
+</figcaption>
+<p></p>
+</figure>
+<p>In de bovenstaande chart kun je goed zien dat modellen met een hoger hidden layer size beter presteren dan een modellen met een kleinere layer size. Ik zie je dat een te hoge dropout (Blauwe lijn), zorg voor een veel slechtere performance van het model.</p>
 <ul>
 <li>reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.</li>
 </ul>
@@ -155,7 +165,15 @@ ul.task-list li input[type="checkbox"] {
 <p>Daarna de settings van de searchspace aangepast naar 2 lagen en de keuze gegeven om een kleine dropout (max 0,3) toe te passen. Met dit model een accuracy gehaald van 96,6%. met een kleine dropout van 0,19.</p>
 <p>De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudige hypertuning model was in +-18 minuten klaar. Het andere hypertuning model heeft de eindstreep niet gehaald.</p>
 <p>-Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.</p>
-<p>MM: Hypertuning afbeeldingen invoegen.</p>
+<p>MM: Op de onderstaande afbeelding kun je goed zien hoe Ray experimenten beeindigd als de resultaten verslechteren. Ik heb hiervoor een screenshot gemaakt van de test/loss functie.</p>
+<figure class="figure">
+<p align="center">
+<img src="img/Raytestloss.png" style="width:100%" class="figure-img">
+</p><figcaption align="center" class="figure-caption">
+<b> Fig 3. Parallel tuning chart van Ray</b>
+</figcaption>
+<p></p>
+</figure>
 </section>
 <section id="c-1" class="level3">
 <h3 class="anchored" data-anchor-id="c-1">2c</h3>

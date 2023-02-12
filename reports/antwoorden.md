@@ -96,14 +96,9 @@ Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit mode
 
 Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.
 
-
-
-
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
 
-Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Het is een standaard GRU die al als resultaat 95% behaalt. Best goed.
-
-Hieronder een voorbeeld hoe je een plaatje met caption zou kunnen invoegen.
+Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting omdat de de data beschikt over 13 features. Een layer size van 64 is ongeveer 5 keer zo groot. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Een standaard GRU met twee lagen behaalt al een accuracy van 95%.
 
 ## Vraag 2
 Een andere collega heeft alvast een hypertuning opgezet in `dev/scripts/02_tune.py`.
@@ -113,10 +108,12 @@ Implementeer de hypertuning voor jouw architectuur:
 - zorg dat je model geschikt is voor hypertuning - 
 
 MM: Settings file aangepast voor hypertuning
-ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Halve lagen kunnen niet.
+ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Je wilt dat hypertuning plaatsvindt op hele lagen, anders geeft dat problemen.
 
 - je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.
-- Stel dat je
+
+MM: model.py bijgewerkt
+
 - voeg jouw model in op de juiste plek in de `tune.py` file.
 
 RNN Gru model toegevoegd aan tune.py file
@@ -137,7 +134,20 @@ De dropout was te hoog in het eerste model (0,5). Dit zorgt voor erg slechte per
 ### 2b
 - Analyseer de resultaten van jouw hypertuning; visualiseer de parameters van jouw hypertuning en sla het resultaat van die visualisatie op in `reports/img`. Suggesties: `parallel_coordinates` kan handig zijn, maar een goed gekozen histogram of scatterplot met goede kleuren is in sommige situaties duidelijker! Denk aan x en y labels, een titel en units voor de assen.
 
-MM: Afbeeldingen invoegen voor Hypertuning.
+MM: Onderstaand een parallel plot van het Ray experiment
+
+<figure>
+  <p align = "center">
+    <img src="img/parallel_ray.png" style="width:100%">
+    <figcaption align="center">
+      <b> Fig 2. Parallel tuning chart van Ray</b>
+    </figcaption>
+  </p>
+</figure>
+
+In de bovenstaande chart kun je goed zien dat modellen met een hoger hidden layer size beter presteren dan een modellen met een kleinere layer size. Ik zie je dat een te hoge dropout (Blauwe lijn), zorg voor een veel slechtere performance van het model.
+
+
 
 - reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.
 
@@ -149,9 +159,18 @@ De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudig
 
 -Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.
 
-MM: Hypertuning afbeeldingen invoegen.
+MM: Op de onderstaande afbeelding kun je goed zien hoe Ray experimenten beeindigd als de resultaten verslechteren. Ik heb hiervoor een screenshot gemaakt van de test/loss functie.
 
+<figure>
+  <p align = "center">
+    <img src="img/Raytestloss.png" style="width:100%">
+    <figcaption align="center">
+      <b> Fig 3. Parallel tuning chart van Ray</b>
+    </figcaption>
+  </p>
+</figure>
 
+Zodra de test/loss functie begint te stijgen kapt Ray het lopende experiment af. Daarnaast selecteert het model ook op de mate waarmee de curve afneemt.
 
 
 ### 2c
