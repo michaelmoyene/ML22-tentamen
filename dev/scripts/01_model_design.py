@@ -1,4 +1,4 @@
-#Werkende 01_model_design.py code
+# Werkende 01_model_design.py code
 from datetime import datetime
 
 import torch
@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     configs = [
         Gruconfig(
-            input=13, output=20, tunedir=presets.logdir, h1=256, dropout=0,num_layers=2
+            input=13, output=20, tunedir=presets.logdir, h1=256, dropout=0, num_layers=2
         ),
     ]
 

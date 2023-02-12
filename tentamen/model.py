@@ -46,8 +46,9 @@ class Accuracy:
         """
         return (yhat.argmax(dim=1) == y).sum() / len(yhat)
 
+
 class GRUModel(nn.Module):
-    def __init__(self,config: Dict) -> None:
+    def __init__(self, config: Dict) -> None:
         super().__init__()
 
         self.rnn = nn.GRU(
@@ -63,6 +64,7 @@ class GRUModel(nn.Module):
         last_step = x[:, -1, :]
         yhat = self.linear(last_step)
         return yhat
+
 
 class AttentionGRU(nn.Module):
     def __init__(

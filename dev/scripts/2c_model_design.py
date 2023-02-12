@@ -1,4 +1,4 @@
-#Werkende 01_model_design.py code
+# Werkende 01_model_design.py code
 from datetime import datetime
 
 import torch
