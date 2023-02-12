@@ -31,12 +31,15 @@ Dropout: Dropout is erg hoog. De helft van de data wordt weggegooid. Gezien het 
 Als je in de forward methode van het Linear model kijkt (in `tentamen/model.py`) dan kun je zien dat het eerste dat hij doet `x.mean(dim=1)` is. 
 
 - Wat is het effect hiervan? Welk probleem probeert hij hier op te lossen? (maw, wat gaat er fout als hij dit niet doet?)
+
 MM: Een audio bestand is een bestand met 3 dimensies. Met x.mean rekent hij het gemiddelde uit over de tweede dimensie de batchsize. Door het gemiddelde te berekenen verminder je ruis die er ingevoerd wordt in de encoder. Daarnaast maak je het signaal duidelijker en wordt het model daardoor sneller. Het gemiddelde van deze tensor wordt vervolgens ingevoerd in de encoder. 
 
 - Hoe had hij dit ook kunnen oplossen?
+
 MM: Hij had hiervoor ook feature extraction kunnen gebruiken om het om te zetten naar MFCC (Mel-Frequency Cepstral Coefficients)  doormiddel van de Pytorch audio package.
 
 - Wat zijn voor een nadelen van de verschillende manieren om deze stap te doen?
+
 MM: Voordeel: Het is eenvoudig uit te voeren en je hebt snel resultaat. Nadeel: Je verliest details en nuances in de dataset. Het is vergelijkbaar met het hanteren van een 'botte bijl'.
 
 Nadeel: Een pytorch audio MFCC heeft meer code en configuratie nodig. Er is ook meer kennis voor nodig om het goed in te stellen. 
