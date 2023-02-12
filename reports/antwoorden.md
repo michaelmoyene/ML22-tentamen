@@ -13,15 +13,17 @@ Het model in deze file heeft in de eerste hidden layer 100 units, in de tweede l
 De dropout staat op 0.5, hij heeft in een blog gelezen dat dit de beste settings voor dropout zou zijn.
 
 - Wat vind je van de architectuur die hij heeft uitgekozen (een Neuraal netwerk met drie Linear layers)? Wat zijn sterke en zwakke kanten van een model als dit in het algemeen? En voor dit specifieke probleem?
-MM: Lagen verkleinen snel. Voor: Snel resultaat, eenvoudig te maken. Tegen: Niet het beste model voor een RNN probleem. Geen gates en geen geheugen.
+MM:  Voor: Met een lineair model heb je snel resultaat. Het is ook vrij eenvoudig te maken. Tegen: Een lineair model is een algemeen model voor machine learning. Over de tijd zijn er betere modellen ontwikkeld die beter passen bij dit probleem. Dit is een audio probleem met een tijds-as waarbij er geluidsgevolgen geanalyseerd moeten worden. Een RNN netwerk is hier beter geschikt voor. Een RNN heeft bijvoorbeeld een tijdelijk geheugen waarbij er afhankelijkheden en patronen onthouden kunnen worden. Een lineair netwerk heeft dit niet.
+
 - Wat vind je van de keuzes die hij heeft gemaakt in de LinearConfig voor het aantal units ten opzichte van de data? En van de dropout?
+
 MM:
 
-input: De input van dit model is 13 features. Python telt vanaf 0, dus dit moet 12 zijn.
-h1: 100 hidden units is te hoog voor het aantal features. Hierdoor kan er overfitting ontstaan. Een vuistregel bij neurale netwerken is dat het aantal units niet meer dan twee keer zo groot is dan het aantal input units. In dit geval is het maximum dus 26. Door middel van trial en error kan het optimale aantal units gevonden worden. Je zou bijvoorbeeld kunnen werken met factoren (1,5x input en 2x de input) om het beste resultaat te vinden.
+input: De input van dit model is 13 features. Dit is goed.
+h1: 100 hidden units is aan de hoge kant voor het aantal features. Hierdoor kan er overfitting ontstaan. Een vuistregel bij neurale netwerken is dat het aantal units niet meer dan twee keer zo groot is dan het aantal input units. In dit geval is het maximum dus 26. Door middel van trial en error kan het optimale aantal units gevonden worden. Je zou bijvoorbeeld kunnen werken met factoren (1,5x input en 2x de input) om het beste resultaat te vinden.
 h2: Verkleint het model te veel naar 10 units. Het aantal units wordt lager dan het aantal klassen. Hierdoor kun je nooit meer een goed eindresultaat bereiken.
-Output: staat op 20. Technisch gezien kan dit niet omdat de laag ervoor 13 nodes heeft. Een deel van de informatie in het model is dus al verdwenen. Het aantal klassen is wel juist. 10 getallen uitgesproken door een man of een vrouw
-Dropout: Dropout is erg hoog. De helft van de data wordt weggegooid. Gezien het formaat van de dataset lijkt mij dit wat veel. Er zijn in totaal 8800 observaties over 10 getallen (880 per getal). Als je de helft weggooit heb je er dus maar 4400 over. Voor machine learning begrippen is dit in verhouding weinig.
+Output: staat op 20. Technisch gezien kan dit niet omdat de laag ervoor 13 nodes heeft. Een deel van de informatie in het model is dus al verdwenen. Het aantal klassen is wel juist.
+Dropout: Dropout is erg hoog. De helft van de data wordt weggegooid. Gezien het formaat van de dataset lijkt mij dit te veel. Er zijn in totaal 8800 observaties over 10 getallen (880 per getal). Als je de helft weggooit heb je er dus maar 4400 over. Voor machine learning begrippen is dit in verhouding weinig.
 
 ## 1b
 Als je in de forward methode van het Linear model kijkt (in `tentamen/model.py`) dan kun je zien dat het eerste dat hij doet `x.mean(dim=1)` is. 
@@ -30,10 +32,12 @@ Als je in de forward methode van het Linear model kijkt (in `tentamen/model.py`)
 MM: Een audio bestand is een bestand met 3 dimensies. Met x.mean rekent hij het gemiddelde uit over de tweede dimensie de batchsize. Door het gemiddelde te berekenen verminder je ruis die er ingevoerd wordt in de encoder. Daarnaast maak je het signaal duidelijker en wordt het model daardoor sneller. Het gemiddelde van deze tensor wordt vervolgens ingevoerd in de encoder. 
 
 - Hoe had hij dit ook kunnen oplossen?
-MM: Je kunt ook batchnormalisatie toepassen na de eerste laag om de data terug te brengen naar kleinere waarden.
+MM: Hij had hiervoor ook feature extraction kunnen gebruiken om het om te zetten naar MFCC (Mel-Frequency Cepstral Coefficients)  doormiddel van bijvoorbeeld Pytorch audio. 
 
 - Wat zijn voor een nadelen van de verschillende manieren om deze stap te doen?
-MM: Bij de methode van de junior is goed te zien om welke dimensie het gaat in het model. Het is ook foutgevoelig en 'hard coded'. Met batchnormalisatie gebeurt
+MM: Bij de methode van de junior is goed te zien om welke dimensie het gaat in het model en het is eenvoudig uit te voeren. Het is een eenvoudige manier om de dimensionaliteit van de dataset te verminderen
+
+Een pytorch audio MFCC heeft meer code en configuratie nodig. Hier is wat meer kennis voor nodig om het goed in te stellen. Het voordeel hiervan is wel dat je meer detail behoudt en dat het
 
 ### 1c
 Omdat jij de cursus Machine Learning hebt gevolgd kun jij hem uitstekend uitleggen wat een betere architectuur zou zijn.
@@ -145,9 +149,7 @@ MM: Onderstaand een parallel plot van het Ray experiment
   </p>
 </figure>
 
-In de bovenstaande chart kun je goed zien dat modellen met een hoger hidden layer size beter presteren dan een modellen met een kleinere layer size. Ik zie je dat een te hoge dropout (Blauwe lijn), zorg voor een veel slechtere performance van het model.
-
-
+In de bovenstaande chart kun je goed zien dat modellen met een hoger hidden layer size beter presteren dan een modellen met een kleinere layer size. Ik zie je dat een te hoge dropout (Blauwe lijn), zorg voor een veel slechtere performance van het model. O
 
 - reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.
 
@@ -170,7 +172,7 @@ MM: Op de onderstaande afbeelding kun je goed zien hoe Ray experimenten beeindig
   </p>
 </figure>
 
-Zodra de test/loss functie begint te stijgen kapt Ray het lopende experiment af. Daarnaast selecteert het model ook op de mate waarmee de curve afneemt.
+Zodra de test/loss functie begint te stijgen kapt Ray het lopende experiment af. Daarnaast selecteert het model ook op de mate waarmee de curve afneemt. Op de groene lijn is een kleine toename in test/loss te zien rond epoch 18. Dit is te weinig om het te kwalificeren als overfitting.
 
 
 ### 2c
@@ -180,9 +182,7 @@ MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt.
 
 Maar er is meer: Attention!
 
-MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden.AttentionGru toegevoegd om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 98%.
-
-
+MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden. AttentionGru toegevoegd aan 'model.py' om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 98%.
 
 ## Vraag 3
 ### 3a
