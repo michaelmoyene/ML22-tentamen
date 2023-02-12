@@ -220,7 +220,7 @@ MM: Gedaan
 
 - Zorg voor nette code. Als je nu `make format && make lint` runt, zie je dat alles ok is. Hoewel het in sommige gevallen prima is om een ignore toe te voegen, is de bedoeling dat je zorgt dat je code zoveel als mogelijk de richtlijnen volgt van de linters.
 
-MM: Gedaan. Make format en Make lint succesvol uitgevoerd via de terminal
+MM: Gedaan. Make format en Make lint succesvol uitgevoerd via de terminal.
 
 - We werken sinds 22 november met git, en ik heb een `git crash coruse.pdf` gedeeld in les 2. Laat zien dat je in git kunt werken, door een git repo aan te maken en jouw code daarheen te pushen. Volg de vuistregel dat je 1) vaak (ruwweg elke dertig minuten aan code) commits doet 2) kleine, logische chunks van code/files samenvoegt in een commit 3) geef duidelijke beschrijvende namen voor je commit messages
 
@@ -228,12 +228,12 @@ MM: Gedaan.
 
 - Zorg voor duidelijke illustraties; voeg labels in voor x en y as, zorg voor eenheden op de assen, een titel, en als dat niet gaat (bv omdat het uit tensorboard komt) zorg dan voor een duidelijke caption van de afbeelding waar dat wel wordt uitgelegd.
 
-MM: Gedaan
+MM: Gedaan.
 
 - Laat zien dat je je vragen kort en bondig kunt beantwoorden. De antwoordstrategie "ik schiet met hagel en hoop dat het goede antwoord ertussen zit" levert minder punten op dan een kort antwoord waar je de essentie weet te vangen. 
 
-MM: Gedaan
+MM: Gedaan.
 
 - nodig mij uit (github handle: raoulg) voor je repository. 
 
-MM: Gedaan
+MM: Gedaan.
