@@ -84,8 +84,11 @@ MM: Het settings bestand is bijgewerkt met de settings voor het GRU Model.
 
 Gezien de grootte van de dataset heb ik ervoor gekozen om de dropout op 0 te zetten. Ik wil het model trainen op alle (beperkte) data die er is.
 MM: Training 1: H1: 128, dropout: 0, num layers = 1. Accuracy: 0,938
+
 MM: Training 2: H1: 128, dropout: 0, num layers = 2. Accuracy: 0.9421
+
 MM: Training 3: H1: 64 , dropout: 0, num layers = 2. Accuracy: 0.9269
+
 MM: Training 4: H1: 256, dropout: 0, num layers = 2. Accuracy: 0,9559
 
 
