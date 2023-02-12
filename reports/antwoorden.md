@@ -40,7 +40,7 @@ MM: Hij had hiervoor ook feature extraction kunnen gebruiken om het om te zetten
 
 - Wat zijn voor een nadelen van de verschillende manieren om deze stap te doen?
 
-MM: Voordeel: Het is eenvoudig uit te voeren en je hebt snel resultaat. Nadeel: Je verliest details en nuances in de dataset. Het is vergelijkbaar met het hanteren van een 'botte bijl'.
+MM: Voordeel van x.mean: Het is eenvoudig uit te voeren en je hebt snel resultaat. Nadeel: Je verliest details en nuances in de dataset. Het is vergelijkbaar met het hanteren van een 'botte bijl'.
 
 Nadeel: Een pytorch audio MFCC heeft meer code en configuratie nodig. Er is ook meer kennis voor nodig om het goed in te stellen. 
 Voordeel van Pytorch audio: Het voordeel hiervan is wel dat je meer detail behoudt van het audiobestand en het dus geschikter is om diepgaande analyses te doen.
@@ -81,6 +81,7 @@ MM: Grumodel aangemaakt
 MM: Het settings bestand is bijgewerkt met de settings voor het GRU Model.
 
 - Train het model met enkele educated guesses van parameters. 
+
 Gezien de grootte van de dataset heb ik ervoor gekozen om de dropout op 0 te zetten. Ik wil het model trainen op alle (beperkte) data die er is.
 MM: Training 1: H1: 128, dropout: 0, num layers = 1. Accuracy: 0,938
 MM: Training 2: H1: 128, dropout: 0, num layers = 2. Accuracy: 0.9421
