@@ -64,7 +64,7 @@ Ook zou ik de dropout op 0 zetten. Met een beperkte dataset is het niet verstand
 
 - Geef aan wat jij verwacht dat de meest veelbelovende architectuur is, en waarom (opnieuw, laat zien dat je niet random getallen noemt, of keuzes maakt, maar dat jij je keuze baseert op ervaring die je hebt opgedaan met andere problemen).
 
-Ik zou in dit geval kiezen voor een Gru model met 2 of drie lagen. Ik zou beginnen met een laaggroote van 64 (+- 5x het aantal features) en dit opschalen naar max 256 hidden layer size. Veel groter voegt waarschijnlijk niet veel toe in dit model omdat er maar 13 features per audio fragment zijn.
+MM: Ik zou in dit geval kiezen voor een Gru model met 2 of drie lagen. Ik zou beginnen met een laaggroote van 64 (+- 5x het aantal features) en dit opschalen naar max 256 hidden layer size. Veel groter voegt waarschijnlijk niet veel toe in dit model omdat er maar 13 features per audio fragment zijn.
 
 Dit model is erg goed in het herkennen van patronen en het in de context plaatsen van audio zonder dat dit excessief veel computerkracht vergt. Het is ook een vrij eenvoudige architectuur om te implementeren en het past goed bij het type bestand (audio over een tijdsas).
 
@@ -144,7 +144,7 @@ MM: In dit stadium geeft 1d daar geen aanleiding toe. 95% vind ik een goed resul
 
 - voeg jouw model in op de juiste plek in de `tune.py` file.
 
-RNN Gru model toegevoegd aan tune.py file
+MM: RNN Gru model toegevoegd aan tune.py file
 
 - maak een zoekruimte aan met behulp van pydantic (naar het voorbeeld van LinearSearchSpace), maar pas het aan voor jouw model.
 
@@ -152,7 +152,7 @@ MM: Zoekruimte voor RNNgru ingevoegd in de settings file (Grusearchspace).
 
 - Licht je keuzes toe: wat hypertune je, en wat niet? Waarom? En in welke ranges zoek je, en waarom? Zie ook de [docs van ray over search space](https://docs.ray.io/en/latest/tune/api_docs/search_space.html#tune-sample-docs) en voor [rondom search algoritmes](https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bohb-tune-search-bohb-tunebohb) voor meer opties en voorbeelden.
 
-In de verkennende fase is geconstateerd dat twee lagen een beter resultaat geeft dan 1 laag. In de hypertune file is de paramater 2 en 3 meegegeven om te meten of een 3e laag wat toevoegt.
+MM: In de verkennende fase is geconstateerd dat twee lagen een beter resultaat geeft dan 1 laag. In de hypertune file is de paramater 2 en 3 meegegeven om te meten of een 3e laag wat toevoegt.
 
 We hebben ook gezien dat bij een laaggrootte van 64 het model gaat overfitten. Er is daarom voor gekozen om te hypertunen vanaf 128 tot en met 256 nodes in stappen van 64. Dit zorgt voor een betere performance van het hypertuning model en zorgt ervoor dat de zoekruimte stapsgewijs toeneemt.
 
