@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Beschrijf de architecturen die je kunt overwegen voor een probleem als dit. Het is voldoende als je beschrijft welke layers in welke combinaties je zou kunnen gebruiken.</li>
 </ul>
 <p>MM: Er zijn een aantal modellen geschikt voor dit type probleem. Je kunt een RNN gebruiken en varianten ervan (LTSM,GRU). Gezien de lengte van de audio bestanden zou een Gru goed passen. Door een attention laag toe te voegen can de accuracy wat verhoogd worden. Attention is een effectieve en efficiënte manier om meer context (weging) te geven aan de data.</p>
-<p>Een CNN model zou ook kunnen passen met conv1d lagen. Ik zou dan beginnen met een model met 2 CNN lagen, Relu en een avgpool functie. Gezien de beperkte lengte van de dataset zijn twee lagen voldoende. Een model dat dieper gaat voegt gezien het aantal klassen (10) waarschijnlijk weinig toe. Daarnaast is het de vraag of een CNN in een dataset met slechts 8800 observaties voldoende data heeft om goed uit de verf te komen</p>
+<p>Een CNN model zou ook kunnen passen met conv1d lagen. Ik zou dan beginnen met een model met 2 CNN lagen, Relu en een avgpool functie. Gezien de beperkte lengte van de dataset zijn twee lagen voldoende. Een model dat dieper gaat voegt gezien het aantal klassen (20) en features waarschijnlijk weinig toe. Daarnaast is het de vraag of een CNN in een dataset met slechts 8800 observaties voldoende data heeft om goed uit de verf te komen.</p>
 <ul>
 <li>Geef vervolgens een indicatie en motivatie voor het aantal units/filters/kernelsize etc voor elke laag die je gebruikt, en hoe je omgaat met overgangen (bv van 3 naar 2 dimensies). Een indicatie is bijvoorbeeld een educated guess voor een aantal units, plus een boven en ondergrens voor het aantal units. Met een motivatie laat je zien dat jouw keuze niet een random selectie is, maar dat je 1) andere problemen hebt gezien en dit probleem daartegen kunt afzetten en 2) een besef hebt van de consquenties van het kiezen van een range.</li>
 </ul>
@@ -118,7 +118,7 @@ ul.task-list li input[type="checkbox"] {
 </figcaption>
 <p></p>
 </figure>
-<p>Het 3e model laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit kan duiden op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.</p>
+<p>Model 3 laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit duidt op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.</p>
 <p>Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.</p>
 <figure class="figure">
 <p align="center">
@@ -132,8 +132,8 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.</li>
 </ul>
-<p>Het is opvallend dat filters zo snel leiden tot overfitting omdat de de dataset beschikt over 13 features. Een layer size van 64 is ongeveer 5 keer zo groot. Het is ook interessant om te zien dat 1 laag echt te weinig is om een goede analyse te doen. Ook met een hidden layer size van 128 is één laag te weinig om een goed machine learning model te maken. Dit model laat ook overfitting zit net zoals het model met layer size 64 met twee lagen.</p>
-<p>Een model met twee lagen presteert beduidend beter en haalt een hoge accuracy van 95%. De settings voor hypertuning zullen dus minimaal twee lagen hebben en een layer size van 128.</p>
+<p>Het is opvallend dat een hidden layer size van 64 zo snel leidt tot overfitting, het is duidelijk een te ‘krappe’ configuratie van het Gru model. Het is ook interessant om te zien dat 1 laag echt te weinig is om een goede analyse te doen. Ook met een hidden layer size van 128 is één laag te weinig om een goed machine learning model te maken. Dit model laat ook overfitting zit net zoals het model met layer size 64 met twee lagen.</p>
+<p>Een model met twee lagen presteert beduidend beter en haalt een hoge accuracy van 95%. De settings voor hypertuning zullen dus minimaal twee lagen hebben en een hidden layer size van 128.</p>
 </section>
 </section>
 <section id="vraag-2" class="level2">
@@ -172,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
 <p align="center">
 <img src="img/parallel_ray.png" style="width:100%" class="figure-img">
 </p><figcaption align="center" class="figure-caption">
-<b> Fig 2. Parallel tuning chart van Ray</b>
+<b> Fig 3. Parallel tuning chart van Ray</b>
 </figcaption>
 <p></p>
 </figure>
@@ -189,7 +189,7 @@ ul.task-list li input[type="checkbox"] {
 <p align="center">
 <img src="img/Raytestloss.png" style="width:100%" class="figure-img">
 </p><figcaption align="center" class="figure-caption">
-<b> Fig 3. Parallel tuning chart van Ray</b>
+<b> Fig 4. Parallel tuning chart van Ray</b>
 </figcaption>
 <p></p>
 </figure>
@@ -200,9 +200,19 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Zorg dat jouw prijswinnende settings in een config komen te staan in <code>settings.py</code>, en train daarmee een model met een optimaal aantal epochs, daarvoor kun je <code>01_model_design.py</code> kopieren en hernoemen naar <code>2c_model_design.py</code>.</li>
 </ul>
-<p>MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt.</p>
+<p>MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt. Model getraind op 50 epochs. Accuracy van 0,9577</p>
 <p>Maar er is meer: Attention!</p>
-<p>MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden. AttentionGru toegevoegd aan ‘model.py’ om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 98%.</p>
+<p>MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden. AttentionGru toegevoegd aan ‘model.py’ om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 0,9844</p>
+<p>Onderstaand een afbeelding van the WinningGru met en zonder attention</p>
+<figure class="figure">
+<p align="center">
+<img src="img/GruAttention.png" style="width:100%" class="figure-img">
+</p><figcaption align="center" class="figure-caption">
+<b> Fig 4. Winning Gru VS Winning Gru Attention</b>
+</figcaption>
+<p></p>
+</figure>
+<p>In de afbeelding is duidelijk te zien dat de Winningru met attention (Gele lijn) sneller leert en beter preseert op de test/loss functie. Door het toevoegen van de attention laag is de leersnelheid dus iets toegenomen en de accuracy verhoogd met circa 3%.</p>
 </section>
 </section>
 <section id="vraag-3" class="level2">

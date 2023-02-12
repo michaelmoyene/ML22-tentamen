@@ -194,17 +194,17 @@ Zodra de test/loss functie begint te stijgen kapt Ray het lopende experiment af.
 ### 2c
 - Zorg dat jouw prijswinnende settings in een config komen te staan in `settings.py`, en train daarmee een model met een optimaal aantal epochs, daarvoor kun je `01_model_design.py` kopieren en hernoemen naar `2c_model_design.py`.
 
-MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt. Model getraind op 50 epochs. Accuracy van 0,9577
+MM: Settings.py bijgewerkt en 2c_model_design.py aangemaakt. Model getraind op 50 epochs. Accuracy behaald van 0,9577. Een goed model maar er is meer:
 
-Maar er is meer: Attention!
+Attention!
 
-MM: Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden. AttentionGru toegevoegd aan 'model.py' om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 0,9844
+Attention is een effeciente methode om de accuracy van een model licht te verhogen. Nadat alle parameters gehypertuned zijn hebben we de optimale instellingen voor de gru gevonden. Door een attention laag toe te voegen kon de accuracy nog wat verder verhoogd worden. AttentionGru toegevoegd aan 'model.py' om te kijken of het winnende model nog beter kan worden! model.py is bijgewerkt en opnieuw 50 epochs getraind. Met een attentionlaag is de accuracy van het model verhoogd naar 0,9844
 
-Onderstaand een afbeelding van the WinningGru met en zonder attention
+Onderstaand een afbeelding van the WinningGru met en zonder attention:
 
 <figure>
   <p align = "center">
-    <img src="img/Gruattention.png" style="width:100%">
+    <img src="img/GruAttention.png" style="width:100%">
     <figcaption align="center">
       <b> Fig 4. Winning Gru VS Winning Gru Attention</b>
     </figcaption>
