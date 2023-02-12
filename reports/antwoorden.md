@@ -83,6 +83,7 @@ MM: Het settings bestand is bijgewerkt met de settings voor het GRU Model.
 - Train het model met enkele educated guesses van parameters. 
 
 Gezien de grootte van de dataset heb ik ervoor gekozen om de dropout op 0 te zetten. Ik wil het model trainen op alle (beperkte) data die er is.
+
 MM: Training 1: H1: 128, dropout: 0, num layers = 1. Accuracy: 0,938
 
 MM: Training 2: H1: 128, dropout: 0, num layers = 2. Accuracy: 0.9421
@@ -94,7 +95,7 @@ MM: Training 4: H1: 256, dropout: 0, num layers = 2. Accuracy: 0,9559
 
 - Rapporteer je bevindingen. Ga hier niet te uitgebreid hypertunen (dat is vraag 2), maar rapporteer (met een afbeelding in `antwoorden/img` die je linkt naar jouw .md antwoord) voor bijvoorbeeld drie verschillende parametersets hoe de train/test loss curve verloopt.
 
-De hoogste accuracy wordt behaald met een RNN netwerk met twee lagen en 256 hidden nodes. 
+De hoogste accuracy wordt behaald met een RNN netwerk met twee lagen en 256 hidden layer size. 
 
 <figure>
   <p align = "center">
@@ -105,9 +106,9 @@ De hoogste accuracy wordt behaald met een RNN netwerk met twee lagen en 256 hidd
   </p>
 </figure>
 
-Model 3 laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit duidt op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.
+Model 3 (groene lijn) laat een sterke stijging in de test/loss functie zien rond epoch 24. Hierdoor daalt de accuracy sterk en herstelt zich later weer. Dit duidt op overfitting. Dit model heeft ook de laagste accuracy van de 4 configuraties die getest zijn. Uit deze korte verkenning zou je kunnen concluderen dat een hidden layer size van 64 te klein is.
 
-Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.
+Het eerste model (roze lijn) laat ook duidelijk overfitting zien. rond Epoch 13. In dit model is maar 1 laag gebruikt. Hieruit concludeer ik dat 1 laag niet diep genoeg is voor het RNN netwerk om tot een goed model te komen.
 
 <figure>
   <p align = "center">
@@ -119,7 +120,7 @@ Het eerste model laat ook duidelijk overfitting zien. rond Epoch 13. In dit mode
 </figure>
 
 
-Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.
+Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitting en er wordt een hoge accuracy behaald. Model 4 (oranje lijn) presteert het beste omdat hier de hidden layer size is verdubbeld naar 256. Dit levert ongever 1% meer accuracy op.
 
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
 
@@ -165,7 +166,7 @@ MM: Onderstaand een parallel plot van het Ray experiment
 
 <figure>
   <p align = "center">
-    <img src="img/parallel_ray.png" style="width:100%">
+    <img src="img/parallel_ray.png" style="width:75%">
     <figcaption align="center">
       <b> Fig 3. Parallel tuning chart van Ray</b>
     </figcaption>
@@ -184,7 +185,7 @@ De les hieruit in dit geval is dat meer niet altijd beter is. Het meer eenvoudig
 
 -Importeer de afbeeldingen in jouw antwoorden, reflecteer op je experiment, en geef een interpretatie en toelichting op wat je ziet.
 
-MM: Op de onderstaande afbeelding kun je goed zien hoe Ray experimenten beeindigd als de resultaten verslechteren. Ik heb hiervoor een screenshot gemaakt van de test/loss functie.
+MM: Op de onderstaande afbeelding kun je goed zien hoe Ray experimenten beëindigd als de resultaten verslechteren. Ik heb hiervoor een screenshot gemaakt van de test/loss functie.
 
 <figure>
   <p align = "center">
@@ -223,7 +224,8 @@ In de afbeelding is duidelijk te zien dat de Winningru met attention (Gele lijn)
 ## Vraag 3
 ### 3a
 - fork deze repository.
-MM: Gedaan
+
+MM: Gedaan.
 
 - Zorg voor nette code. Als je nu `make format && make lint` runt, zie je dat alles ok is. Hoewel het in sommige gevallen prima is om een ignore toe te voegen, is de bedoeling dat je zorgt dat je code zoveel als mogelijk de richtlijnen volgt van de linters.
 
