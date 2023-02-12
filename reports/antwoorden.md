@@ -13,12 +13,13 @@ Het model in deze file heeft in de eerste hidden layer 100 units, in de tweede l
 De dropout staat op 0.5, hij heeft in een blog gelezen dat dit de beste settings voor dropout zou zijn.
 
 - Wat vind je van de architectuur die hij heeft uitgekozen (een Neuraal netwerk met drie Linear layers)? Wat zijn sterke en zwakke kanten van een model als dit in het algemeen? En voor dit specifieke probleem?
-MM:  Voor: Met een lineair model heb je snel resultaat. Het is ook vrij eenvoudig te maken. Tegen: Een lineair model is een algemeen model voor machine learning. Over de tijd zijn er betere modellen ontwikkeld die beter passen bij dit probleem. Dit is een audio probleem met een tijds-as waarbij er geluidsgevolgen geanalyseerd moeten worden. Een RNN netwerk is hier beter geschikt voor. Een RNN heeft bijvoorbeeld een tijdelijk geheugen waarbij er afhankelijkheden en patronen onthouden kunnen worden. Een lineair netwerk heeft dit niet.
+MM:  Voor: Met een lineair model heb je snel resultaat. Het is ook vrij eenvoudig te maken. 
+
+Tegen: Een lineair model is een algemeen model voor machine learning. Over de tijd zijn er betere modellen ontwikkeld die beter passen bij dit probleem. Dit is een audio probleem met een tijds-as waarbij er geluidsgevolgen geanalyseerd moeten worden. Een RNN netwerk is hier beter geschikt voor. Een RNN heeft bijvoorbeeld een tijdelijk geheugen waarbij er afhankelijkheden en patronen onthouden kunnen worden. Een lineair netwerk heeft dit niet.
 
 - Wat vind je van de keuzes die hij heeft gemaakt in de LinearConfig voor het aantal units ten opzichte van de data? En van de dropout?
 
 MM:
-
 input: De input van dit model is 13 features. Dit is goed.
 h1: 100 hidden units is aan de hoge kant voor het aantal features. Hierdoor kan er overfitting ontstaan. Een vuistregel bij neurale netwerken is dat het aantal units niet meer dan twee keer zo groot is dan het aantal input units. In dit geval is het maximum dus 26. Door middel van trial en error kan het optimale aantal units gevonden worden. Je zou bijvoorbeeld kunnen werken met factoren (1,5x input en 2x de input) om het beste resultaat te vinden.
 h2: Verkleint het model te veel naar 10 units. Het aantal units wordt lager dan het aantal klassen. Hierdoor kun je nooit meer een goed eindresultaat bereiken.
@@ -32,37 +33,48 @@ Als je in de forward methode van het Linear model kijkt (in `tentamen/model.py`)
 MM: Een audio bestand is een bestand met 3 dimensies. Met x.mean rekent hij het gemiddelde uit over de tweede dimensie de batchsize. Door het gemiddelde te berekenen verminder je ruis die er ingevoerd wordt in de encoder. Daarnaast maak je het signaal duidelijker en wordt het model daardoor sneller. Het gemiddelde van deze tensor wordt vervolgens ingevoerd in de encoder. 
 
 - Hoe had hij dit ook kunnen oplossen?
-MM: Hij had hiervoor ook feature extraction kunnen gebruiken om het om te zetten naar MFCC (Mel-Frequency Cepstral Coefficients)  doormiddel van bijvoorbeeld Pytorch audio. 
+MM: Hij had hiervoor ook feature extraction kunnen gebruiken om het om te zetten naar MFCC (Mel-Frequency Cepstral Coefficients)  doormiddel van de Pytorch audio package.
 
 - Wat zijn voor een nadelen van de verschillende manieren om deze stap te doen?
 MM: Bij de methode van de junior is goed te zien om welke dimensie het gaat in het model en het is eenvoudig uit te voeren. Het is een eenvoudige manier om de dimensionaliteit van de dataset te verminderen
 
-Een pytorch audio MFCC heeft meer code en configuratie nodig. Hier is wat meer kennis voor nodig om het goed in te stellen. Het voordeel hiervan is wel dat je meer detail behoudt en dat het
+Een pytorch audio MFCC heeft meer code en configuratie nodig. Er is ook meer kennis voor nodig om het goed in te stellen. Het voordeel hiervan is wel dat je meer detail behoudt van het audiobestand en het dus geschikter is om diepgaande analyses te doen.
 
 ### 1c
 Omdat jij de cursus Machine Learning hebt gevolgd kun jij hem uitstekend uitleggen wat een betere architectuur zou zijn.
 
 - Beschrijf de architecturen die je kunt overwegen voor een probleem als dit. Het is voldoende als je beschrijft welke layers in welke combinaties je zou kunnen gebruiken.
+
 MM: Er zijn een aantal modellen geschikt voor dit type probleem. Je kunt een RNN gebruiken en varianten ervan (LTSM,GRU). Gezien de lengte van de audio bestanden zou een Gru goed passen. Door een attention laag toe te voegen can de accuracy wat verhoogd worden. Attention is een effectieve en efficiënte manier om meer context (weging) te geven aan de data.
 
 Een CNN model zou ook kunnen passen met conv1d lagen. Ik zou dan beginnen met een model met 2 CNN lagen, Relu en een avgpool functie. Gezien de beperkte lengte van de dataset zijn twee lagen voldoende. Een model dat dieper gaat voegt gezien het aantal klassen (10) waarschijnlijk weinig toe. Daarnaast is het de vraag of een CNN in een dataset met slechts 8800 observaties voldoende data heeft om goed uit de verf te komen
 
 - Geef vervolgens een indicatie en motivatie voor het aantal units/filters/kernelsize etc voor elke laag die je gebruikt, en hoe je omgaat met overgangen (bv van 3 naar 2 dimensies). Een indicatie is bijvoorbeeld een educated guess voor een aantal units, plus een boven en ondergrens voor het aantal units. Met een motivatie laat je zien dat jouw keuze niet een random selectie is, maar dat je 1) andere problemen hebt gezien en dit probleem daartegen kunt afzetten en 2) een besef hebt van de consquenties van het kiezen van een range.
-MM: : ok zou ik kleine filters gebruiken (2x2) omdat de dataset klein is.
 
+MM: : Voor een CNN model zou ik twee lagen gebruiken van met out:16 en 32 channels met een kernel size van 3. Het model veel groter maken heeft gezien de dataset niet heel veel zin omdat het detail simpelweg niet aanwezig is. De kernel size en channel size zou je kunnen hypertunen voor het optimale model. Kernel size kun je tussen de 2-4 zetten en naar verhouding de lagen aanpassen.
 
+Voor het gru model zou ik twee lagen gebruiken met 64 of 128 layer size met een maximum van 256. Meer lagen (het dieper maken van het model) kost waarschijnlijk veel performance zonder dat het een veel beter resultaat oplevert. 1 laag is waarschijnlijk te weinig om een goed onderscheid te maken tussen de verschillende klassen.
+
+Ook zou ik de dropout op 0 zetten. Met een beperkte dataset is het niet verstandig om een grote dropout toe te passen. Met hypertunen kun je nog proberen of een dropout wat toevoegt, het maximum wat ik zou toepassen is 0.3.
 
 - Geef aan wat jij verwacht dat de meest veelbelovende architectuur is, en waarom (opnieuw, laat zien dat je niet random getallen noemt, of keuzes maakt, maar dat jij je keuze baseert op ervaring die je hebt opgedaan met andere problemen).
 
-Een gru met attention is waarschijnlijk het meest geschikte model. Dit model is erg goed in het herkennen van patronen en het in de context plaatsen van text zonder dat dit excessief veel computerkracht vergt.
+Ik zou in dit geval kiezen voor een Gru model met 2 of drie lagen. Ik zou beginnen met een laaggroote van 64 (+- 5x het aantal features) en dit opschalen naar max 256 hidden layer size. Veel groter voegt waarschijnlijk niet veel toe in dit model omdat er maar 13 features per audio fragment zijn.
+
+Dit model is erg goed in het herkennen van patronen en het in de context plaatsen van audio zonder dat dit excessief veel computerkracht vergt. Het is ook een vrij eenvoudige architectuur om te implementeren en het past goed bij het type bestand (audio over een tijdsas).
 
 
 ### 1d
 Implementeer jouw veelbelovende model: 
 
-- Maak in `model.py` een nieuw nn.Module met jouw architectuur : Concept laag geimplementeerd - RNN Gru model zonder attention layer.
+- Maak in `model.py` een nieuw nn.Module met jouw architectuur : 
+
+MM: Grumodel aangemaakt
+
 - Maak in `settings.py` een nieuwe config voor jouw model:
+
 MM: Het settings bestand is bijgewerkt met de settings voor het GRU Model.
+
 - Train het model met enkele educated guesses van parameters. 
 Gezien de grootte van de dataset heb ik ervoor gekozen om de dropout op 0 te zetten. Ik wil het model trainen op alle (beperkte) data die er is.
 MM: Training 1: H1: 128, dropout: 0, num layers = 1. Accuracy: 0,938
@@ -102,7 +114,9 @@ Model 2 en 4 laten de beste resultaten zien. Er is geen geen sprake van overfitt
 
 - reflecteer op deze eerste verkenning van je model. Wat valt op, wat vind je interessant, wat had je niet verwacht, welk inzicht neem je mee naar de hypertuning.
 
-Ik had niet verwacht dat 64 filters zo snel zou leiden tot overfitting omdat de de data beschikt over 13 features. Een layer size van 64 is ongeveer 5 keer zo groot. Ook had ik niet verwacht dat dit relatief simpele model zo goed zou presteren. Een standaard GRU met twee lagen behaalt al een accuracy van 95%.
+Het is opvallend dat filters zo snel  leiden tot overfitting omdat de de dataset beschikt over 13 features. Een layer size van 64 is ongeveer 5 keer zo groot. Het is ook interessant om te zien dat 1 laag echt te weinig is om een goede analyse te doen. Ook met een hidden layer size van 128 is één laag te weinig om een goed machine learning model te maken. Dit model laat ook overfitting zit net zoals het model met layer size 64 met twee lagen.
+
+Een model met twee lagen presteert beduidend beter en haalt een hoge accuracy van 95%. De settings voor hypertuning zullen dus minimaal twee lagen hebben en een layer size van 128.
 
 ## Vraag 2
 Een andere collega heeft alvast een hypertuning opgezet in `dev/scripts/02_tune.py`.
@@ -112,11 +126,11 @@ Implementeer de hypertuning voor jouw architectuur:
 - zorg dat je model geschikt is voor hypertuning - 
 
 MM: Settings file aangepast voor hypertuning
-ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Je wilt dat hypertuning plaatsvindt op hele lagen, anders geeft dat problemen.
+Ik heb ook ray tune.choice methode gebruikt om model te forceren om te kiezen tussen twee of drie lagen. Je wilt dat hypertuning plaatsvindt op hele lagen, anders geeft dat problemen met het model.
 
 - je mag je model nog wat aanpassen, als vraag 1d daar aanleiding toe geeft. Als je in 1d een ander model gebruikt dan hier, geef je model dan een andere naam zodat ik ze naast elkaar kan zien.
 
-MM: model.py bijgewerkt
+MM: In dit stadium geeft 1d daar geen aanleiding toe. 95% vind ik een goed resultaat voor een eerste poging.
 
 - voeg jouw model in op de juiste plek in de `tune.py` file.
 
@@ -149,7 +163,7 @@ MM: Onderstaand een parallel plot van het Ray experiment
   </p>
 </figure>
 
-In de bovenstaande chart kun je goed zien dat modellen met een hoger hidden layer size beter presteren dan een modellen met een kleinere layer size. Ik zie je dat een te hoge dropout (Blauwe lijn), zorg voor een veel slechtere performance van het model. O
+In de bovenstaande chart kun je goed zien dat modellen met een hoger hidden layer size beter presteren dan een modellen met een kleinere layer size. Ik zie je dat een te hoge dropout (Blauwe lijn), zorg voor een veel slechtere performance van het model. 
 
 - reflecteer op de hypertuning. Wat werkt wel, wat werkt niet, wat vind je verrassend, wat zijn trade-offs die je ziet in de hypertuning, wat zijn afwegingen bij het kiezen van een uiteindelijke hyperparametersetting.
 
